@@ -4,4 +4,9 @@
   <artifactId>lolo</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>lolo</name>
+
+  <properties>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+  </properties>
 </project>
