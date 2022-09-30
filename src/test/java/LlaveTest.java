@@ -1,3 +1,8 @@
+import Utils.Celda;
+import Utils.Direccion;
+import character.Player;
+import items.Llave;
+import lolo.Mapa;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

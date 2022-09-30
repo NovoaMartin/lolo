@@ -1,3 +1,8 @@
+package character;
+
+import Utils.Celda;
+import lolo.Mapa;
+
 public class Player extends Character {
     private boolean winner = false;
     private boolean key = false;

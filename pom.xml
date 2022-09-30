@@ -23,7 +23,7 @@
                 <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>Mapa</mainClass>
+                                <mainClass>lolo.Mapa</mainClass>
                             </manifest>
                         </archive>
                 </configuration>

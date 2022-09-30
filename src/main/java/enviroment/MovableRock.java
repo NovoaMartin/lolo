@@ -1,3 +1,9 @@
+package enviroment;
+
+import Utils.Celda;
+import character.Character;
+import lolo.Mapa;
+
 public class MovableRock extends Enviroment {
 
     public MovableRock(Celda pos, Mapa mapa) {

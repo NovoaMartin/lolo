@@ -1,3 +1,7 @@
+import Utils.Direccion;
+import character.Player;
+import lolo.Mapa;
+
 import java.util.Scanner;
 
 public class Main {

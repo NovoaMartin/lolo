@@ -1,3 +1,9 @@
+package enviroment;
+
+import Utils.Celda;
+import character.Character;
+import lolo.Mapa;
+
 public abstract class Enviroment {
     protected Celda pos;
     protected Mapa mapa;

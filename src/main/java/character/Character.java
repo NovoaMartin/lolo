@@ -1,7 +1,11 @@
+package character;
+import Utils.*;
+import lolo.Mapa;
+
 public abstract class Character {
     private Celda pos;
     private final Mapa mapa;
-    int vidas;
+    private int vidas;
     protected boolean alive = true;
 
     public Character(Celda pos, Mapa mapa, int vidas) {
@@ -36,5 +40,9 @@ public abstract class Character {
 
     public boolean isAlive() {
         return this.alive;
+    }
+
+    public int getVidas() {
+        return vidas;
     }
 }

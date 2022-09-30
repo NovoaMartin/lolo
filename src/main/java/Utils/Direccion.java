@@ -1,3 +1,5 @@
+package Utils;
+
 public class Direccion {
     public static final int UP = 0;
     public static final int DOWN = 1;

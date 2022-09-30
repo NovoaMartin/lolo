@@ -1,3 +1,14 @@
+package lolo;
+
+import Utils.Celda;
+import character.Character;
+import character.Player;
+import enviroment.Enviroment;
+import enviroment.MovableRock;
+import enviroment.Wall;
+import items.Item;
+import items.Llave;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -109,15 +120,15 @@ public class Mapa {
     }
 
     private void addItem(String type, int x, int y) {
-        if (type.equals("Llave")) {
+        if (type.equals("items.Llave")) {
             this.items[x][y] = new Llave(new Celda(x, y), this);
         }
     }
 
     private void addEnvironment(String type, int x, int y) {
-        if (type.equals("Wall")) {
+        if (type.equals("enviroment.Wall")) {
             this.enviroments[x][y] = new Wall(new Celda(x, y), this);
-        } else if (type.equals("MovableRock")) {
+        } else if (type.equals("enviroment.MovableRock")) {
             this.enviroments[x][y] = new MovableRock(new Celda(x, y), this);
         }
     }

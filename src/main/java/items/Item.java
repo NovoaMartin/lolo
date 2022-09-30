@@ -1,3 +1,9 @@
+package items;
+
+import Utils.Celda;
+import character.Character;
+import lolo.Mapa;
+
 public abstract class Item {
     protected Celda pos;
     protected Mapa mapa;

@@ -1,3 +1,9 @@
+import Utils.Celda;
+import Utils.Direccion;
+import character.Player;
+import enviroment.MovableRock;
+import enviroment.Wall;
+import lolo.Mapa;
 import org.junit.Before;
 import org.junit.Test;
 

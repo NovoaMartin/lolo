@@ -2,7 +2,7 @@
 4 4
 1 3
 1 1 3
-Llave 1 3
-MovableRock 3 3
-MovableRock 4 5
-Wall 5 5
+items.Llave 1 3
+enviroment.MovableRock 3 3
+enviroment.MovableRock 4 5
+enviroment.Wall 5 5
