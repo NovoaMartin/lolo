@@ -88,4 +88,27 @@ public class MapaTest {
         assertEquals(new Celda(4, 6), player.getPos());
     }
 
+    @Test
+    public void noSePuedeMoverSobreUnEnemigo() {
+        player.setPos(new Celda(5, 2));
+        player.tryMove(Direccion.UP);
+        assertEquals(new Celda(5, 2), player.getPos());
+    }
+
+    @Test
+    public void recibeDanioAlPisarTrampa() {
+        player.setPos(new Celda(5, 2));
+        player.tryMove(Direccion.UP);
+        assertEquals(2, player.getVidas());
+        assertTrue(player.isAlive());
+    }
+
+    @Test
+    public void muereAlPisarPozo() {
+        player.setPos(new Celda(6, 2));
+        player.tryMove(Direccion.UP);
+        assertEquals(0, player.getVidas());
+        assertFalse(player.isAlive());
+    }
+
 }

@@ -34,7 +34,7 @@ public class Mapa {
     public Mapa(String mapName) {
         this.enemigos = new ArrayList<Enemigo>();
         this.players = new ArrayList<Player>();
-        this.enemigos.add(new Pozo(new Celda(6,1), this, 1));
+        this.enemigos.add(new Pozo(new Celda(6, 1), this, 1));
         try {
             this.loadFromFile(mapName);
         } catch (Exception e) {
@@ -50,9 +50,9 @@ public class Mapa {
             return;
         }
 
-        if(character instanceof Player p){
-            for(Enemigo e : enemigos){
-                if(e.getPos().equals(target)){
+        if (character instanceof Player p) {
+            for (Enemigo e : enemigos) {
+                if (e.getPos().equals(target)) {
                     e.atacar(p);
                     return;
                 }
@@ -109,6 +109,7 @@ public class Mapa {
 
         int numItems = scanner.nextInt();
         int numEnviroments = scanner.nextInt();
+        int numEnemigos = scanner.nextInt();
         this.items = new Item[this.width][this.height];
         this.enviroments = new Enviroment[this.width][this.height];
 
@@ -125,6 +126,12 @@ public class Mapa {
             int x = scanner.nextInt();
             int y = scanner.nextInt();
             addEnvironment(type, x, y);
+        }
+        for (int i = 0; i < numEnemigos; i++) {
+            String type = scanner.next();
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            addEnemigo(type, x, y);
         }
         scanner.close();
         for (int i = 0; i < this.width; i++) {
@@ -148,6 +155,14 @@ public class Mapa {
             this.enviroments[x][y] = new Wall(new Celda(x, y));
         } else if (type.equals("enviroment.MovableRock")) {
             this.enviroments[x][y] = new MovableRock(new Celda(x, y));
+        }
+    }
+
+    private void addEnemigo(String type, int x, int y) {
+        if (type.equals("Pozo")) {
+            this.enemigos.add(new Pozo(new Celda(x, y), this, 1));
+        } else if (type.equals("Trampa")) {
+            this.enemigos.add(new Trampa(new Celda(x, y), this, 1));
         }
     }
 

@@ -1,6 +1,7 @@
 ancho alto
 xSalida ySalida
-cantItems cantEnviroments
+cantItems cantEnviroments cantEnemigos
 xInicial yInicial vidas
 TipoItem x y //cantItems lineas
 TipoEnviroment x y //cantEnviroments lineas
+TipoEnemigo x y //cantEnemigos lineas
