@@ -12,7 +12,7 @@ public class LlaveTest {
     @Test
     public void testInteractWith() {
         Mapa m = new Mapa("mapa.test.txt");
-        Llave l = new Llave(new Celda(1, 1), m);
+        Llave l = new Llave(new Celda(1, 1));
         Player p = new Player(new Celda(2, 1), m, 3);
         l.interactWith(p, Direccion.DOWN, m);
         assertTrue(p.hasKey());

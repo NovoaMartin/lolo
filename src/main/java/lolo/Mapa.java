@@ -48,7 +48,7 @@ public class Mapa {
                 items[target.x][target.y] = null;
             }
         } else if (enviroments[target.x][target.y] != null) {
-            enviroments[target.x][target.y].interactWith(character, direccion);
+            enviroments[target.x][target.y].interactWith(character, direccion, this);
         } else if (target.equals(this.salida)) {
             if (character instanceof Player p && ((Player) character).hasKey()) {
                 p.setWinner();
@@ -111,26 +111,26 @@ public class Mapa {
         }
         scanner.close();
         for (int i = 0; i < this.width; i++) {
-            this.enviroments[i][0] = new Wall(new Celda(i, 0), this);
-            this.enviroments[i][this.height - 1] = new Wall(new Celda(i, this.height - 1), this);
+            this.enviroments[i][0] = new Wall(new Celda(i, 0));
+            this.enviroments[i][this.height - 1] = new Wall(new Celda(i, this.height - 1));
         }
         for (int i = 0; i < this.height; i++) {
-            this.enviroments[0][i] = new Wall(new Celda(0, i), this);
-            this.enviroments[this.width - 1][i] = new Wall(new Celda(this.width - 1, i), this);
+            this.enviroments[0][i] = new Wall(new Celda(0, i));
+            this.enviroments[this.width - 1][i] = new Wall(new Celda(this.width - 1, i));
         }
     }
 
     private void addItem(String type, int x, int y) {
         if (type.equals("items.Llave")) {
-            this.items[x][y] = new Llave(new Celda(x, y), this);
+            this.items[x][y] = new Llave(new Celda(x, y));
         }
     }
 
     private void addEnvironment(String type, int x, int y) {
         if (type.equals("enviroment.Wall")) {
-            this.enviroments[x][y] = new Wall(new Celda(x, y), this);
+            this.enviroments[x][y] = new Wall(new Celda(x, y));
         } else if (type.equals("enviroment.MovableRock")) {
-            this.enviroments[x][y] = new MovableRock(new Celda(x, y), this);
+            this.enviroments[x][y] = new MovableRock(new Celda(x, y));
         }
     }
 

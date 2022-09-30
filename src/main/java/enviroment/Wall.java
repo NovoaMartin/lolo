@@ -5,12 +5,12 @@ import character.Character;
 import lolo.Mapa;
 
 public class Wall extends Enviroment {
-    public Wall(Celda pos, Mapa mapa) {
-        super(pos, mapa);
+    public Wall(Celda pos) {
+        super(pos);
     }
 
     @Override
-    public void interactWith(Character character, int direccion) {
+    public void interactWith(Character character, int direccion, Mapa m) {
         // Nothing
     }
 }

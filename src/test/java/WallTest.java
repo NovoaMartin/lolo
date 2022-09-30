@@ -15,13 +15,13 @@ public class WallTest {
     @Before
     public void setUp() {
         m = new Mapa("mapa.test.txt");
-        wall = new Wall(new Celda(1, 1), m);
+        wall = new Wall(new Celda(1, 1));
     }
 
     @Test
     public void testInteractWith() {
         Player p = new Player(new Celda(2, 1), m, 3);
-        wall.interactWith(p, Direccion.DOWN);
+        wall.interactWith(p, Direccion.DOWN, m);
         assertEquals(p.getPos(), new Celda(2, 1));
         assertEquals(3, p.getVidas());
         assertEquals(wall.getPos(), new Celda(1, 1));

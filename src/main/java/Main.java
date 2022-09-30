@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Mapa m = new Mapa("mapa.test.txt");
+        Mapa m = new Mapa("mapa.txt");
         m.printMap();
         Player p = m.getPlayer();
 
