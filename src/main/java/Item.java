@@ -1,5 +1,13 @@
 public abstract class Item {
-    private boolean valid = true;
+    protected Celda pos;
+    protected Mapa mapa;
+    protected boolean valid = true;
+
+    public Item(Celda pos, Mapa mapa) {
+        this.pos = pos;
+        this.mapa = mapa;
+    }
+
 
     public abstract void interactWith(Character character, int direccion, Mapa mapa);
 
