@@ -8,13 +8,11 @@ public abstract class Enviroment {
     protected Celda pos;
     protected Mapa mapa;
 
-    public Enviroment(Celda pos, Mapa mapa) {
+    public Enviroment(Celda pos) {
         this.pos = pos;
-        this.mapa = mapa;
     }
 
-
-    public abstract void interactWith(Character character, int direccion);
+    public abstract void interactWith(Character character, int direccion, Mapa mapa);
 
     public void setPos(Celda pos) {
         this.pos = pos;

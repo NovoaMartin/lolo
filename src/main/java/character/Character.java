@@ -1,4 +1,5 @@
 package character;
+
 import Utils.*;
 import lolo.Mapa;
 
@@ -25,14 +26,14 @@ public abstract class Character {
     public Celda getPos() {
         return pos;
     }
-
-    public void takeDamage() {
-        this.vidas--;
-        if (this.vidas == 0) {
-            this.alive = false;
-        }
+    
+    public void recibirDanio() {
+    	this.vidas--;
+    	if(this.vidas <= 0) {
+    		morir();
+    	}
     }
-
+    
     public void morir() {
         this.vidas = 0;
         this.alive = false;

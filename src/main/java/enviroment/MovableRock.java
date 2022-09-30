@@ -6,14 +6,14 @@ import lolo.Mapa;
 
 public class MovableRock extends Enviroment {
 
-    public MovableRock(Celda pos, Mapa mapa) {
-        super(pos, mapa);
+    public MovableRock(Celda pos) {
+        super(pos);
     }
-
-    protected boolean tryMove(int direccion) {
-        return this.mapa.tryMove(this, direccion);
+    
+    protected boolean tryMove(int direccion, Mapa mapa) {
+        return mapa.tryMove(this, direccion);
     }
-
+    
     @Override
     public void interactWith(Character character, int direccion) {
         boolean moved = this.tryMove(direccion);
@@ -21,5 +21,4 @@ public class MovableRock extends Enviroment {
             character.tryMove(direccion);
         }
     }
-
 }
