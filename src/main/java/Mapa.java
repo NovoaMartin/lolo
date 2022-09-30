@@ -51,7 +51,11 @@ public class Mapa {
                 if (items[j][i] != null) {
                     System.out.print("I");
                 } else if (enviroments[j][i] != null) {
-                    System.out.print("W");
+                    if (enviroments[j][i] instanceof MovableRock) {
+                        System.out.print("R");
+                    } else {
+                        System.out.print("#");
+                    }
                 } else if (players.get(0).getPos().x == j && players.get(0).getPos().y == i) {
                     System.out.print("P");
                 } else if (salida.x == j && salida.y == i) {
@@ -98,6 +102,8 @@ public class Mapa {
             int y = scanner.nextInt();
             if (type.equals("Wall")) {
                 this.enviroments[x][y] = new Wall(new Celda(x, y), this);
+            } else if (type.equals("MovableRock")) {
+                this.enviroments[x][y] = new MovableRock(new Celda(x, y), this);
             }
         }
 
@@ -137,12 +143,15 @@ public class Mapa {
     }
 
     public boolean tryMove(Enviroment enviroment, int direccion) {
+        Celda from = enviroment.getPos();
         Celda target = enviroment.getPos().translate(direccion);
         if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height || players.stream().anyMatch(c -> c.getPos().equals(target))) {
             return false;
         }
         if (items[target.x][target.y] == null && enviroments[target.x][target.y] == null) {
             enviroment.setPos(target);
+            enviroments[from.x][from.y] = null;
+            enviroments[target.x][target.y] = enviroment;
             return true;
         }
         return false;
