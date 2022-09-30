@@ -1,15 +1,15 @@
 public abstract class Character {
     private Celda pos;
-    private Mapa mapa;
+    private final Mapa mapa;
     int vidas;
 
-    public Character(Celda pos, Mapa mapa) {
+    public Character(Celda pos, Mapa mapa, int vidas) {
         this.pos = pos;
         this.mapa = mapa;
-        this.vidas = 3;
+        this.vidas = vidas;
     }
 
-    public void tryMove(int direccion){
+    public void tryMove(int direccion) {
         this.mapa.tryMove(this, direccion);
     }
 
