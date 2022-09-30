@@ -7,13 +7,13 @@ public class Mapa {
     private int width;
     private int height;
 
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
     private Item[][] items;
     private Enviroment[][] enviroments;
 
     private Celda salida;
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         Mapa m = new Mapa("mapa.txt");
         m.printMap();
         Player p = m.getPlayer();
@@ -69,9 +69,14 @@ public class Mapa {
     }
 
 
-    public Mapa(String mapName) throws FileNotFoundException {
+    public Mapa(String mapName) {
         this.players = new ArrayList<Player>();
-        this.loadFromFile(mapName);
+        try {
+            this.loadFromFile(mapName);
+        } catch (Exception e) {
+            System.out.println("Error al cargar el mapa");
+            System.exit(1);
+        }
     }
 
     private void loadFromFile(String mapName) throws FileNotFoundException {
@@ -161,4 +166,7 @@ public class Mapa {
         return players.get(0);
     }
 
+    public Enviroment[][] getEnviroments() {
+        return enviroments;
+    }
 }
