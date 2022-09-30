@@ -3,7 +3,15 @@
   <groupId>lolo</groupId>
   <artifactId>lolo</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>lolo</name>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <name>lolo</name>
 
   <properties>
     <maven.compiler.target>17</maven.compiler.target>
