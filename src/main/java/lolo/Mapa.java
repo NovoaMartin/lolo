@@ -3,6 +3,9 @@ package lolo;
 
 import Utils.Celda;
 import character.Character;
+import character.Enemigo;
+import character.Enemigos.Pozo;
+import character.Enemigos.Trampa;
 import character.Player;
 import enviroment.Enviroment;
 import enviroment.MovableRock;
@@ -23,11 +26,15 @@ public class Mapa {
     private Item[][] items;
     private Enviroment[][] enviroments;
 
+    private final ArrayList<Enemigo> enemigos;
+
     private Celda salida;
 
 
     public Mapa(String mapName) {
+        this.enemigos = new ArrayList<Enemigo>();
         this.players = new ArrayList<Player>();
+        this.enemigos.add(new Pozo(new Celda(6,1), this, 1));
         try {
             this.loadFromFile(mapName);
         } catch (Exception e) {
@@ -42,6 +49,16 @@ public class Mapa {
         if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height || players.stream().anyMatch(c -> c.getPos().equals(target) && c != character)) {
             return;
         }
+
+        if(character instanceof Player p){
+            for(Enemigo e : enemigos){
+                if(e.getPos().equals(target)){
+                    e.atacar(p);
+                    return;
+                }
+            }
+        }
+
         if (items[target.x][target.y] != null) {
             items[target.x][target.y].interactWith(character, direccion, this);
             if (!items[target.x][target.y].isValid()) {

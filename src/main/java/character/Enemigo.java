@@ -11,7 +11,7 @@ public abstract class Enemigo extends Character{
 	
 	String nombre;
 	
-	public abstract void atacar(Jugador player);
+	public abstract void atacar(Player player);
 	
 	public String getNombre() {
 		return nombre;
