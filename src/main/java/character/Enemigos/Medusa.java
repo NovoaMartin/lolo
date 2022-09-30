@@ -7,11 +7,8 @@ import lolo.Mapa;
 
 public class Medusa extends Enemigo{
 	public Medusa(Celda pos, Mapa mapa, int vidas) {
-    	super(pos, mapa, vidas);
-    	nombre = "Medusa";
+    	super(pos, mapa, vidas,"Medusa");
     }
-	
-	String nombre;
 	
 	@Override 
 	public void atacar(Jugador player) {

@@ -7,11 +7,8 @@ import lolo.Mapa;
 
 public class Gol extends Enemigo {
 	public Gol(Celda pos, Mapa mapa, int vidas) {
-    	super(pos, mapa, vidas);
-    	nombre = "Gol";
+    	super(pos, mapa, vidas,"Gol");
     }
-	
-	String nombre;
 	
 	@Override 
 	public void atacar(Jugador player) {
