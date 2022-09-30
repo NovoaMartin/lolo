@@ -15,6 +15,7 @@ public class Snakey extends Enemigo {
 	
 	@Override 
 	public void atacar(Jugador player) {
+		player.recibirDanio();
 		System.out.println("Atacando como Snakey...");
 	}
 }
