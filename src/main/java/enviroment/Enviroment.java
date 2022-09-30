@@ -5,8 +5,8 @@ import character.Character;
 import lolo.Mapa;
 
 public abstract class Enviroment {
-	
-    private Celda pos;
+    protected Celda pos;
+    protected Mapa mapa;
 
     public Enviroment(Celda pos) {
         this.pos = pos;

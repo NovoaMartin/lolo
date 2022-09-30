@@ -1,117 +1,159 @@
 package lolo;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import Utils.Celda;
 import character.Character;
-import character.Jugador;
+import character.Player;
 import enviroment.Enviroment;
-import items.Cofre;
+import enviroment.MovableRock;
+import enviroment.Wall;
 import items.Item;
+import items.Llave;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Mapa {
-	private int width;
-	private int height;
-	private int cantCorazones;
-	private boolean puertaAbierta;
-	
-	private List<Character> characters;
-	private Item[][] items;
-	private Enviroment[][] enviroments;
-	private Cofre cofre;
-	private Celda puerta;
-	
-	public Mapa(int w, int h, Cofre cofre, Celda puerta) {
+    private int width;
+    private int height;
 
-		this.width = w;
-		this.height = h;
-		this.puerta = puerta;
-		this.cofre = cofre;
+    private final ArrayList<Player> players;
+    private Item[][] items;
+    private Enviroment[][] enviroments;
 
-		characters = new ArrayList<Character>(2);
-		items = new Item[w][h];
-		enviroments = new Enviroment[w][h];
-		cantCorazones = 0;
-		puertaAbierta = false;
+    private Celda salida;
 
-	}
 
-	public void addCharacter(Character c) {
-		characters.add(c);
-	}
+    public Mapa(String mapName) {
+        this.players = new ArrayList<Player>();
+        try {
+            this.loadFromFile(mapName);
+        } catch (Exception e) {
+            System.out.println("Error al cargar el mapa");
+            System.exit(1);
+        }
+    }
 
-	public void addItem(Item i) {
-		if(i.getClass().getName().contains("Corazon")){
-			cantCorazones++;
-		}
-		items[i.getPos().x][i.getPos().y] = i;
-	}
 
-	public void addEnviroment(Enviroment e) {
-		enviroments[e.getPos().x][e.getPos().y] = e;
-	}
-	
-	public void removeElementPos(Celda pos, String type) {
-		if(type.contains("item")) {
-			if(type.contains("Corazon") && --cantCorazones == 0) {
-				cofre.abrirCofre();
-			}
-			items[pos.x][pos.y] = null;
-		} else {
-			enviroments[pos.x][pos.y] = null;
-		}
-	}
-	
-	public void tryMove(Character character, int direccion) {
-		Celda target = character.getPos().translate(direccion);
-		if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height
-				/*|| characters.stream().anyMatch(c -> c.getPos().equals(target) && c != character)*/) {
-			return;
-		}
-		if (items[target.x][target.y] != null) {
-			items[target.x][target.y].interactWith(character, direccion, this);
-		} else if (enviroments[target.x][target.y] != null) {
-			enviroments[target.x][target.y].interactWith(character, direccion, this);
-		} else if(cofre.getPos().equals(target) && cofreAbierto()){
-			cofre.interactWith(character, direccion, this);
-		} else if(puerta.equals(target) && puertaAbierta) {
-			((Jugador)character).ganar();
-			character.setPos(target);
-		} else {
-			character.setPos(target);
-		}
-	}
+    public void tryMove(Character character, int direccion) {
+        Celda target = character.getPos().translate(direccion);
+        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height || players.stream().anyMatch(c -> c.getPos().equals(target) && c != character)) {
+            return;
+        }
+        if (items[target.x][target.y] != null) {
+            items[target.x][target.y].interactWith(character, direccion, this);
+            if (!items[target.x][target.y].isValid()) {
+                items[target.x][target.y] = null;
+            }
+        } else if (enviroments[target.x][target.y] != null) {
+            enviroments[target.x][target.y].interactWith(character, direccion);
+        } else if (target.equals(this.salida)) {
+            if (character instanceof Player p && ((Player) character).hasKey()) {
+                p.setWinner();
+                System.out.println("Ganaste!");
+            }
+        } else {
+            character.setPos(target);
+        }
+    }
 
-	public boolean tryMove(Enviroment enviroment, int direccion) {
-		Celda target = enviroment.getPos().translate(direccion);
-		if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height
-				/*|| characters.stream().anyMatch(c -> c.getPos().equals(target))*/) {
-			return false;
-		}
-		if (items[target.x][target.y] == null && enviroments[target.x][target.y] == null) {
-			enviroments[enviroment.getPos().x][enviroment.getPos().y] = null;
-			enviroment.setPos(target);
-			enviroments[enviroment.getPos().x][enviroment.getPos().y] = enviroment;
-			return true;
-		}
-		return false;
-	}
-	
+    public boolean tryMove(Enviroment enviroment, int direccion) {
+        Celda from = enviroment.getPos();
+        Celda target = enviroment.getPos().translate(direccion);
+        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height ||
+                players.stream().anyMatch(c -> c.getPos().equals(target))
+                || target.equals(this.salida)) {
+            return false;
+        }
+        if (items[target.x][target.y] == null && enviroments[target.x][target.y] == null) {
+            enviroment.setPos(target);
+            enviroments[from.x][from.y] = null;
+            enviroments[target.x][target.y] = enviroment;
+            return true;
+        }
+        return false;
+    }
 
-	public int corazonesRestantes() {
-		return cantCorazones;
-	}
-	
-	public void abrirPuerta() {
-		puertaAbierta = true;
-	}
-	
-	public boolean puertaAbierta() {
-		return puertaAbierta;
-	}
-	
-	public boolean cofreAbierto() {
-		return cofre.cofreAbierto();
-	}
+    public Player getPlayer() {
+        return players.get(0);
+    }
+
+    public Enviroment[][] getEnviroments() {
+        return enviroments;
+    }
+
+    private void loadFromFile(String mapName) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(mapName));
+        this.width = scanner.nextInt();
+        this.height = scanner.nextInt();
+        this.salida = new Celda(scanner.nextInt(), scanner.nextInt());
+
+        int numItems = scanner.nextInt();
+        int numEnviroments = scanner.nextInt();
+        this.items = new Item[this.width][this.height];
+        this.enviroments = new Enviroment[this.width][this.height];
+
+        this.players.add(new Player(new Celda(scanner.nextInt(), scanner.nextInt()), this, scanner.nextInt()));
+
+        for (int i = 0; i < numItems; i++) {
+            String type = scanner.next();
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            addItem(type, x, y);
+        }
+        for (int i = 0; i < numEnviroments; i++) {
+            String type = scanner.next();
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            addEnvironment(type, x, y);
+        }
+        scanner.close();
+        for (int i = 0; i < this.width; i++) {
+            this.enviroments[i][0] = new Wall(new Celda(i, 0), this);
+            this.enviroments[i][this.height - 1] = new Wall(new Celda(i, this.height - 1), this);
+        }
+        for (int i = 0; i < this.height; i++) {
+            this.enviroments[0][i] = new Wall(new Celda(0, i), this);
+            this.enviroments[this.width - 1][i] = new Wall(new Celda(this.width - 1, i), this);
+        }
+    }
+
+    private void addItem(String type, int x, int y) {
+        if (type.equals("items.Llave")) {
+            this.items[x][y] = new Llave(new Celda(x, y), this);
+        }
+    }
+
+    private void addEnvironment(String type, int x, int y) {
+        if (type.equals("enviroment.Wall")) {
+            this.enviroments[x][y] = new Wall(new Celda(x, y), this);
+        } else if (type.equals("enviroment.MovableRock")) {
+            this.enviroments[x][y] = new MovableRock(new Celda(x, y), this);
+        }
+    }
+
+    public void printMap() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (items[j][i] != null) {
+                    System.out.print("I");
+                } else if (enviroments[j][i] != null) {
+                    if (enviroments[j][i] instanceof MovableRock) {
+                        System.out.print("R");
+                    } else {
+                        System.out.print("#");
+                    }
+                } else if (players.get(0).getPos().x == j && players.get(0).getPos().y == i) {
+                    System.out.print("P");
+                } else if (salida.x == j && salida.y == i) {
+                    System.out.print("S");
+                } else {
+                    System.out.print("_");
+                }
+            }
+            System.out.println();
+        }
+    }
 }
