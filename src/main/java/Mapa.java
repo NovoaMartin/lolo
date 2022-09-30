@@ -18,7 +18,6 @@ public class Mapa {
         m.printMap();
         Player p = m.getPlayer();
 
-        //Loop gameinput
         Scanner sc = new Scanner(System.in);
         label:
         while (true) {
@@ -44,31 +43,6 @@ public class Mapa {
         }
     }
 
-    public void printMap() {
-
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (items[j][i] != null) {
-                    System.out.print("I");
-                } else if (enviroments[j][i] != null) {
-                    if (enviroments[j][i] instanceof MovableRock) {
-                        System.out.print("R");
-                    } else {
-                        System.out.print("#");
-                    }
-                } else if (players.get(0).getPos().x == j && players.get(0).getPos().y == i) {
-                    System.out.print("P");
-                } else if (salida.x == j && salida.y == i) {
-                    System.out.print("S");
-                } else {
-                    System.out.print("_");
-                }
-            }
-            System.out.println();
-        }
-    }
-
-
     public Mapa(String mapName) {
         this.players = new ArrayList<Player>();
         try {
@@ -79,53 +53,6 @@ public class Mapa {
         }
     }
 
-    private void loadFromFile(String mapName) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File(mapName));
-        this.width = scanner.nextInt();
-        this.height = scanner.nextInt();
-        this.salida = new Celda(scanner.nextInt(), scanner.nextInt());
-
-        int numItems = scanner.nextInt();
-        int numEnviroments = scanner.nextInt();
-        this.items = new Item[this.width][this.height];
-        this.enviroments = new Enviroment[this.width][this.height];
-
-        this.players.add(new Player(new Celda(scanner.nextInt(), scanner.nextInt()), this, scanner.nextInt()));
-
-        for (int i = 0; i < numItems; i++) {
-            String type = scanner.next();
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
-            if (type.equals("Llave")) {
-                this.items[x][y] = new Llave(new Celda(x, y), this);
-            }
-        }
-
-        for (int i = 0; i < numEnviroments; i++) {
-            String type = scanner.next();
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
-            if (type.equals("Wall")) {
-                this.enviroments[x][y] = new Wall(new Celda(x, y), this);
-            } else if (type.equals("MovableRock")) {
-                this.enviroments[x][y] = new MovableRock(new Celda(x, y), this);
-            }
-        }
-
-        scanner.close();
-
-        //Fill all borders of enviroment with a wall
-        for (int i = 0; i < this.width; i++) {
-            this.enviroments[i][0] = new Wall(new Celda(i, 0), this);
-            this.enviroments[i][this.height - 1] = new Wall(new Celda(i, this.height - 1), this);
-        }
-        for (int i = 0; i < this.height; i++) {
-            this.enviroments[0][i] = new Wall(new Celda(0, i), this);
-            this.enviroments[this.width - 1][i] = new Wall(new Celda(this.width - 1, i), this);
-        }
-
-
-    }
 
     public void tryMove(Character character, int direccion) {
         Celda target = character.getPos().translate(direccion);
@@ -139,9 +66,11 @@ public class Mapa {
             }
         } else if (enviroments[target.x][target.y] != null) {
             enviroments[target.x][target.y].interactWith(character, direccion);
-        } else if (target.equals(this.salida) && character.getClass() == Player.class && ((Player) character).hasKey()) {
-            System.out.println("You win!");
-            System.exit(0);
+        } else if (target.equals(this.salida)) {
+            if (character instanceof Player && ((Player) character).hasKey()) {
+                System.out.println("Has ganado!");
+                System.exit(0);
+            }
         } else {
             character.setPos(target);
         }
@@ -168,5 +97,78 @@ public class Mapa {
 
     public Enviroment[][] getEnviroments() {
         return enviroments;
+    }
+
+    private void loadFromFile(String mapName) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(mapName));
+        this.width = scanner.nextInt();
+        this.height = scanner.nextInt();
+        this.salida = new Celda(scanner.nextInt(), scanner.nextInt());
+
+        int numItems = scanner.nextInt();
+        int numEnviroments = scanner.nextInt();
+        this.items = new Item[this.width][this.height];
+        this.enviroments = new Enviroment[this.width][this.height];
+
+        this.players.add(new Player(new Celda(scanner.nextInt(), scanner.nextInt()), this, scanner.nextInt()));
+
+        for (int i = 0; i < numItems; i++) {
+            String type = scanner.next();
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            addItem(type, x, y);
+        }
+        for (int i = 0; i < numEnviroments; i++) {
+            String type = scanner.next();
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            addEnvironment(type, x, y);
+        }
+        scanner.close();
+        for (int i = 0; i < this.width; i++) {
+            this.enviroments[i][0] = new Wall(new Celda(i, 0), this);
+            this.enviroments[i][this.height - 1] = new Wall(new Celda(i, this.height - 1), this);
+        }
+        for (int i = 0; i < this.height; i++) {
+            this.enviroments[0][i] = new Wall(new Celda(0, i), this);
+            this.enviroments[this.width - 1][i] = new Wall(new Celda(this.width - 1, i), this);
+        }
+    }
+
+    private void addItem(String type, int x, int y) {
+        if (type.equals("Llave")) {
+            this.items[x][y] = new Llave(new Celda(x, y), this);
+        }
+    }
+
+    private void addEnvironment(String type, int x, int y) {
+        if (type.equals("Wall")) {
+            this.enviroments[x][y] = new Wall(new Celda(x, y), this);
+        } else if (type.equals("MovableRock")) {
+            this.enviroments[x][y] = new MovableRock(new Celda(x, y), this);
+        }
+    }
+
+    public void printMap() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (items[j][i] != null) {
+                    System.out.print("I");
+                } else if (enviroments[j][i] != null) {
+                    if (enviroments[j][i] instanceof MovableRock) {
+                        System.out.print("R");
+                    } else {
+                        System.out.print("#");
+                    }
+                } else if (players.get(0).getPos().x == j && players.get(0).getPos().y == i) {
+                    System.out.print("P");
+                } else if (salida.x == j && salida.y == i) {
+                    System.out.print("S");
+                } else {
+                    System.out.print("_");
+                }
+            }
+            System.out.println();
+        }
     }
 }
