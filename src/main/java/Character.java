@@ -2,6 +2,7 @@ public abstract class Character {
     private Celda pos;
     private final Mapa mapa;
     int vidas;
+    protected boolean alive = true;
 
     public Character(Celda pos, Mapa mapa, int vidas) {
         this.pos = pos;
@@ -19,5 +20,21 @@ public abstract class Character {
 
     public Celda getPos() {
         return pos;
+    }
+
+    public void takeDamage() {
+        this.vidas--;
+        if (this.vidas == 0) {
+            this.alive = false;
+        }
+    }
+
+    public void morir() {
+        this.vidas = 0;
+        this.alive = false;
+    }
+
+    public boolean isAlive() {
+        return this.alive;
     }
 }

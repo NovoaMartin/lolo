@@ -13,35 +13,6 @@ public class Mapa {
 
     private Celda salida;
 
-    public static void main(String[] args) {
-        Mapa m = new Mapa("mapa.txt");
-        m.printMap();
-        Player p = m.getPlayer();
-
-        Scanner sc = new Scanner(System.in);
-        label:
-        while (true) {
-            String input = sc.nextLine();
-            System.out.print("\033[H\033[2J");
-            switch (input) {
-                case "w":
-                    p.tryMove(Direccion.UP);
-                    break;
-                case "a":
-                    p.tryMove(Direccion.LEFT);
-                    break;
-                case "s":
-                    p.tryMove(Direccion.DOWN);
-                    break;
-                case "d":
-                    p.tryMove(Direccion.RIGHT);
-                    break;
-                case "q":
-                    break label;
-            }
-            m.printMap();
-        }
-    }
 
     public Mapa(String mapName) {
         this.players = new ArrayList<Player>();
@@ -67,9 +38,9 @@ public class Mapa {
         } else if (enviroments[target.x][target.y] != null) {
             enviroments[target.x][target.y].interactWith(character, direccion);
         } else if (target.equals(this.salida)) {
-            if (character instanceof Player && ((Player) character).hasKey()) {
-                System.out.println("Has ganado!");
-                System.exit(0);
+            if (character instanceof Player p && ((Player) character).hasKey()) {
+                p.setWinner();
+                System.out.println("Ganaste!");
             }
         } else {
             character.setPos(target);
@@ -79,7 +50,9 @@ public class Mapa {
     public boolean tryMove(Enviroment enviroment, int direccion) {
         Celda from = enviroment.getPos();
         Celda target = enviroment.getPos().translate(direccion);
-        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height || players.stream().anyMatch(c -> c.getPos().equals(target))) {
+        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height ||
+                players.stream().anyMatch(c -> c.getPos().equals(target))
+                || target.equals(this.salida)) {
             return false;
         }
         if (items[target.x][target.y] == null && enviroments[target.x][target.y] == null) {
