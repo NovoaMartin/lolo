@@ -111,4 +111,13 @@ public class MapaTest {
         assertFalse(player.isAlive());
     }
 
+    @Test
+    public void noSePuedeMoverUnEnviromentSobreEnemigo() {
+        MovableRock r = (MovableRock) mapa.getEnviroments()[6][4];
+        player.setPos(new Celda(5, 4));
+        player.tryMove(Direccion.RIGHT);
+        assertEquals(new Celda(6, 4), r.getPos());
+        assertEquals(new Celda(5, 4), player.getPos());
+    }
+
 }
