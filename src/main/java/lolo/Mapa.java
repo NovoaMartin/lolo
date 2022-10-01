@@ -106,7 +106,7 @@ public class Mapa {
     }
 
     private void loadFromFile(String mapName) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File(mapName));
+        Scanner scanner = new Scanner(new File("mapas/" + mapName));
         this.width = scanner.nextInt();
         this.height = scanner.nextInt();
         this.salida = new Celda(scanner.nextInt(), scanner.nextInt());
