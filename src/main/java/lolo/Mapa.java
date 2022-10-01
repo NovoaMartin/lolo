@@ -16,6 +16,7 @@ import items.Llave;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Mapa {
@@ -34,7 +35,6 @@ public class Mapa {
     public Mapa(String mapName) {
         this.enemigos = new ArrayList<Enemigo>();
         this.players = new ArrayList<Player>();
-        this.enemigos.add(new Pozo(new Celda(6, 1), this, 1));
         try {
             this.loadFromFile(mapName);
         } catch (Exception e) {
@@ -84,6 +84,10 @@ public class Mapa {
                 || target.equals(this.salida)) {
             return false;
         }
+        Optional<Enemigo> enemigo = enemigos.stream().filter(e -> e.getPos().equals(target)).findFirst();
+        if (enemigo.isPresent())
+            return false;
+
         if (items[target.x][target.y] == null && enviroments[target.x][target.y] == null) {
             enviroment.setPos(target);
             enviroments[from.x][from.y] = null;
@@ -169,6 +173,10 @@ public class Mapa {
     public void printMap() {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
+                int finalI = i;
+                int finalJ = j;
+                Optional<Enemigo> enemigo = enemigos.stream().filter(e -> e.getPos().equals(new Celda(finalJ, finalI))).findFirst();
+
                 if (items[j][i] != null) {
                     System.out.print("I");
                 } else if (enviroments[j][i] != null) {
@@ -178,9 +186,14 @@ public class Mapa {
                         System.out.print("#");
                     }
                 } else if (players.get(0).getPos().x == j && players.get(0).getPos().y == i) {
-                    System.out.print("P");
+                    System.out.print("J");
                 } else if (salida.x == j && salida.y == i) {
                     System.out.print("S");
+                } else if (enemigo.isPresent()) {
+                    if (enemigo.get() instanceof Pozo)
+                        System.out.print("P");
+                    else if (enemigo.get() instanceof Trampa)
+                        System.out.print("T");
                 } else {
                     System.out.print("_");
                 }

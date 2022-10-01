@@ -24,7 +24,7 @@
                 <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>lolo.Mapa</mainClass>
+                                <mainClass>Main</mainClass>
                             </manifest>
                         </archive>
                 </configuration>
