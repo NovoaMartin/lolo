@@ -6,6 +6,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Pantalla.startGame();
+    }
+    public static void main2(String[] args) {
         Mapa m = new Mapa("mapa.2.txt");
         m.printMap();
         Player p = m.getPlayer();
