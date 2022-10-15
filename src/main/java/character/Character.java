@@ -4,7 +4,7 @@ import Utils.*;
 import lolo.Mapa;
 
 public abstract class Character {
-    private Celda pos;
+    protected Celda pos;
     private final Mapa mapa;
     private int vidas;
     protected boolean alive = true;
