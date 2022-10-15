@@ -15,6 +15,10 @@ public class Player extends Character implements Renderable {
 
     public Player(Celda pos, Mapa mapa, int vidas) {
         super(pos, mapa, vidas);
+        shape = new Rectangle(45, 45);
+        shape.setTranslateY(2.5 + pos.y * 50);
+        shape.setTranslateX(2.5 + pos.x * 50);
+        shape.setFill(Color.GRAY);
     }
 
     public void tryMove(int direccion) {
@@ -43,12 +47,6 @@ public class Player extends Character implements Renderable {
 
     @Override
     public Node getRender() {
-        if (shape == null) {
-            shape = new Rectangle(45, 45);
-            shape.setTranslateY(2.5 + pos.y * 50);
-            shape.setTranslateX(2.5 + pos.x * 50);
-            shape.setFill(Color.GRAY);
-        }
         return shape;
     }
 
