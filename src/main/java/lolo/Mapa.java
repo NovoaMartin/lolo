@@ -233,6 +233,9 @@ public class Mapa implements Renderable {
                 }
             }
         }
+        for (Enemigo enemigo : this.enemigos) {
+            root.getChildren().add(enemigo.getRender());
+        }
         root.getChildren().add(players.get(0).getRender());
         return root;
     }

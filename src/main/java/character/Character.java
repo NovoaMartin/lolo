@@ -1,9 +1,10 @@
 package character;
 
 import Utils.*;
+import graphics.Renderable;
 import lolo.Mapa;
 
-public abstract class Character {
+public abstract class Character implements Renderable {
     protected Celda pos;
     private final Mapa mapa;
     private int vidas;
@@ -26,14 +27,14 @@ public abstract class Character {
     public Celda getPos() {
         return pos;
     }
-    
+
     public void recibirDanio() {
-    	this.vidas--;
-    	if(this.vidas <= 0) {
-    		morir();
-    	}
+        this.vidas--;
+        if (this.vidas <= 0) {
+            morir();
+        }
     }
-    
+
     public void morir() {
         this.vidas = 0;
         this.alive = false;
@@ -46,4 +47,6 @@ public abstract class Character {
     public int getVidas() {
         return vidas;
     }
+
+
 }
