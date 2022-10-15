@@ -3,13 +3,22 @@ package items;
 import Utils.Celda;
 import character.Character;
 import character.Player;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import lolo.Mapa;
 
-public class Llave extends Item{
+public class Llave extends Item {
 
-	public Llave(Celda pos) {
-		super(pos);
-	}
+    ImageView image;
+
+    public Llave(Celda pos) {
+        super(pos);
+        image = new ImageView("file:src/main/resources/llave.png");
+        image.setTranslateY(2.5 + pos.y * 50);
+        image.setTranslateX(2.5 + pos.x * 50);
+        image.setFitHeight(45);
+        image.setFitWidth(45);
+    }
 
     @Override
     public void interactWith(Character character, int direccion, Mapa mapa) {
@@ -18,6 +27,10 @@ public class Llave extends Item{
         }
         this.valid = false;
     }
-  
+
+    @Override
+    public Node getRender() {
+        return image;
+    }
 }
 

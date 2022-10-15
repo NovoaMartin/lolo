@@ -219,6 +219,13 @@ public class Mapa implements Renderable {
             }
         }
         root.getChildren().add(canvas);
+        for (Item[] items : this.items) {
+            for (Item item : items) {
+                if (item != null) {
+                    root.getChildren().add(item.getRender());
+                }
+            }
+        }
         root.getChildren().add(players.get(0).getRender());
         return root;
     }
