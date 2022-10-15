@@ -10,8 +10,12 @@ import character.Player;
 import enviroment.Enviroment;
 import enviroment.MovableRock;
 import enviroment.Wall;
+import graphics.Renderable;
 import items.Item;
 import items.Llave;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class Mapa {
+public class Mapa implements Renderable {
     private int width;
     private int height;
 
@@ -200,5 +204,26 @@ public class Mapa {
             }
             System.out.println();
         }
+    }
+
+    Canvas canvas;
+    Group root = new Group();
+
+    public Node getRender() {
+        if (canvas == null) {
+            canvas = new Canvas(width * 50, height * 50);
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    canvas.getGraphicsContext2D().strokeRect(i * 50, j * 50, 50, 50);
+                }
+            }
+        }
+        root.getChildren().add(canvas);
+        root.getChildren().add(players.get(0).getRender());
+        return root;
+    }
+
+    public void setEventListeners(Node node) {
+        players.get(0).setEventListeners(node);
     }
 }
