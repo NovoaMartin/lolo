@@ -2,9 +2,10 @@ package enviroment;
 
 import Utils.Celda;
 import character.Character;
+import graphics.Renderable;
 import lolo.Mapa;
 
-public abstract class Enviroment {
+public abstract class Enviroment implements Renderable {
     protected Celda pos;
     protected Mapa mapa;
 
