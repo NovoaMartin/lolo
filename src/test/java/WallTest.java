@@ -1,8 +1,8 @@
-import Utils.Celda;
-import Utils.Direccion;
+import Utils.Cell;
+import Utils.Direction;
 import character.Player;
 import enviroment.Wall;
-import lolo.Mapa;
+import lolo.GameMap;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,27 +10,27 @@ import static org.junit.Assert.assertEquals;
 
 public class WallTest {
     Wall wall;
-    Mapa m;
+    GameMap m;
 
     @Before
     public void setUp() {
-        m = new Mapa("mapa.test.txt");
-        wall = new Wall(new Celda(1, 1));
+        m = new GameMap("mapa.test.txt");
+        wall = new Wall(new Cell(1, 1));
     }
 
     @Test
     public void testInteractWith() {
-        Player p = new Player(new Celda(2, 1), m, 3);
-        wall.interactWith(p, Direccion.DOWN, m);
-        assertEquals(p.getPos(), new Celda(2, 1));
-        assertEquals(3, p.getVidas());
-        assertEquals(wall.getPos(), new Celda(1, 1));
+        Player p = new Player(new Cell(2, 1), m, 3);
+        wall.interactWith(p, Direction.DOWN, m);
+        assertEquals(p.getPos(), new Cell(2, 1));
+        assertEquals(3, p.getLives());
+        assertEquals(wall.getPos(), new Cell(1, 1));
     }
 
     @Test
     public void setPosTest() {
-        wall.setPos(new Celda(2, 2));
-        assertEquals(wall.getPos(), new Celda(2, 2));
+        wall.setPos(new Cell(2, 2));
+        assertEquals(wall.getPos(), new Cell(2, 2));
     }
 
 }

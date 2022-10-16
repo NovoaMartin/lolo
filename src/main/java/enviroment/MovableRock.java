@@ -1,24 +1,24 @@
 package enviroment;
 
-import Utils.Celda;
+import Utils.Cell;
 import character.Character;
-import lolo.Mapa;
+import lolo.GameMap;
 
-public class MovableRock extends Enviroment {
+public class MovableRock extends Environment {
 
-    public MovableRock(Celda pos) {
+    public MovableRock(Cell pos) {
         super(pos);
     }
     
-    protected boolean tryMove(int direccion, Mapa mapa) {
-        return mapa.tryMove(this, direccion);
+    protected boolean move(int direction, GameMap map) {
+        return map.move(this, direction);
     }
     
     @Override
-    public void interactWith(Character character, int direccion, Mapa mapa) {
-        boolean moved = this.tryMove(direccion, mapa);
+    public void interactWith(Character character, int direction, GameMap map) {
+        boolean moved = this.move(direction, map);
         if (moved) {
-            character.tryMove(direccion);
+            character.move(direction);
         }
     }
 }

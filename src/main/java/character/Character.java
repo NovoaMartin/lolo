@@ -1,49 +1,51 @@
 package character;
 
 import Utils.*;
-import lolo.Mapa;
+import lolo.GameMap;
 
 public abstract class Character {
-    private Celda pos;
-    private final Mapa mapa;
-    private int vidas;
+    private Cell pos;
+    private final GameMap gameMap;
+    private int lives;
     protected boolean alive = true;
 
-    public Character(Celda pos, Mapa mapa, int vidas) {
+    public Character(Cell pos, GameMap map, int lives) {
         this.pos = pos;
-        this.mapa = mapa;
-        this.vidas = vidas;
+        this.gameMap = map;
+        this.lives = lives;
     }
 
-    public void tryMove(int direccion) {
-        this.mapa.tryMove(this, direccion);
+    public void move(int direction) {
+        this.gameMap.move(this, direction);
     }
 
-    public void setPos(Celda pos) {
+    public void setPos(Cell pos) {
         this.pos = pos;
     }
 
-    public Celda getPos() {
+    public Cell getPos() {
         return pos;
     }
     
-    public void recibirDanio() {
-    	this.vidas--;
-    	if(this.vidas <= 0) {
-    		morir();
+    public void hurt() {
+    	this.lives--;
+    	if(this.lives == 0) {
+    		kill();
     	}
     }
     
-    public void morir() {
-        this.vidas = 0;
-        this.alive = false;
+    public void kill() {
+        this.lives = 0;
     }
 
     public boolean isAlive() {
-        return this.alive;
+        return lives > 0;
     }
 
-    public int getVidas() {
-        return vidas;
+    public int getLives() {
+        return lives;
     }
+    
+    // TODO: Hacerlo un enum?
+    abstract public String getAlliance();
 }

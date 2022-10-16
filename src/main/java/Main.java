@@ -1,12 +1,12 @@
-import Utils.Direccion;
+import Utils.Direction;
 import character.Player;
-import lolo.Mapa;
+import lolo.GameMap;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Mapa m = new Mapa("mapa.2.txt");
+        GameMap m = new GameMap("mapa.2.txt");
         m.printMap();
         Player p = m.getPlayer();
 
@@ -15,18 +15,18 @@ public class Main {
         while (p.isAlive() && !p.isWinner()) {
             String input = sc.nextLine();
             System.out.print("\033[H\033[2J");
-            switch (input) {
+            switch (input.toLowerCase()) {
                 case "w":
-                    p.tryMove(Direccion.UP);
+                    p.move(Direction.UP);
                     break;
                 case "a":
-                    p.tryMove(Direccion.LEFT);
+                    p.move(Direction.LEFT);
                     break;
                 case "s":
-                    p.tryMove(Direccion.DOWN);
+                    p.move(Direction.DOWN);
                     break;
                 case "d":
-                    p.tryMove(Direccion.RIGHT);
+                    p.move(Direction.RIGHT);
                     break;
                 case "q":
                     break label;

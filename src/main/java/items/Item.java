@@ -1,18 +1,18 @@
 package items;
 
-import Utils.Celda;
+import Utils.Cell;
 import character.Character;
-import lolo.Mapa;
+import lolo.GameMap;
 
 public abstract class Item {
-    protected Celda pos;
+    protected Cell pos;
     protected boolean valid = true;
 
-    public Item(Celda pos) {
+    public Item(Cell pos) {
         this.pos = pos;
     }
     
-    public abstract void interactWith(Character character, int direccion, Mapa mapa);
+    public abstract void interactWith(Character character, int direction, GameMap map);
 
     public boolean isValid() {
         return valid;

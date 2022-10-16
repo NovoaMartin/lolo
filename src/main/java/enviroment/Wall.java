@@ -1,16 +1,16 @@
 package enviroment;
 
-import Utils.Celda;
+import Utils.Cell;
 import character.Character;
-import lolo.Mapa;
+import lolo.GameMap;
 
-public class Wall extends Enviroment {
-    public Wall(Celda pos) {
+public class Wall extends Environment {
+    public Wall(Cell pos) {
         super(pos);
     }
 
     @Override
-    public void interactWith(Character character, int direccion, Mapa m) {
+    public void interactWith(Character character, int direction, GameMap m) {
         // Nothing
     }
 }

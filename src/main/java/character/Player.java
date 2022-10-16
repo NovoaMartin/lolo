@@ -1,19 +1,19 @@
 package character;
 
-import Utils.Celda;
-import lolo.Mapa;
+import Utils.Cell;
+import lolo.GameMap;
 
 public class Player extends Character {
     private boolean winner = false;
     private boolean key = false;
 
-    public Player(Celda pos, Mapa mapa, int vidas) {
-        super(pos, mapa, vidas);
+    public Player(Cell pos, GameMap map, int lives) {
+        super(pos, map, lives);
     }
 
-    public void tryMove(int direccion) {
+    public void move(int direction) {
         if (alive && !winner)
-            super.tryMove(direccion);
+            super.move(direction);
     }
 
     public void takeKey() {
@@ -30,5 +30,9 @@ public class Player extends Character {
 
     public boolean isWinner() {
         return this.winner;
+    }
+    
+    public String getAlliance() {
+    	return "PLAYER";
     }
 }

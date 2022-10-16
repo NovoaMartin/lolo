@@ -2,7 +2,7 @@
 10 10
 1 18 7
 1 1 3
-items.Llave 6 5
+items.Key 6 5
 enviroment.Wall 2 2
 enviroment.Wall 2 3
 enviroment.Wall 2 4
@@ -21,10 +21,10 @@ enviroment.Wall 8 9
 enviroment.MovableRock 2 1
 enviroment.MovableRock 3 4
 enviroment.MovableRock 7 5
-Pozo 1 7
-Pozo 6 4
-Trampa 7 1
-Trampa 7 7
-Trampa 5 9
-Trampa 9 9
-Trampa 10 9
+Pit 1 7
+Pit 6 4
+Trap 7 1
+Trap 7 7
+Trap 5 9
+Trap 9 9
+Trap 10 9
