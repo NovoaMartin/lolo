@@ -59,7 +59,7 @@ public class Mapa implements Renderable {
 
         if (character instanceof Player p) {
             for (Enemigo e : enemigos) {
-                if (e.getPos().equals(target) || e.canInteractWith(target)) {
+                if (e.isAlive() && e.getPos().equals(target) || e.canInteractWith(target)) {
                     e.interactWith(p, direccion, this);
                     return;
                 }
@@ -92,7 +92,7 @@ public class Mapa implements Renderable {
             return false;
         }
         Optional<Enemigo> enemigo = enemigos.stream().filter(e -> e.getPos().equals(target)).findFirst();
-        if (enemigo.isPresent())
+        if (enemigo.isPresent() && enemigo.get().isAlive())
             return false;
 
         if (items[target.x][target.y] == null && enviroments[target.x][target.y] == null) {
