@@ -20,7 +20,11 @@ public class Trampa extends Enemigo {
     @Override
     public void atacar(Player player) {
         player.recibirDanio();
-        System.out.println("Te has caido en una trampa");
+    }
+
+    @Override
+    public void interactWith(Player p, int direccion, Mapa mapa) {
+        atacar(p);
     }
 
     public Node getRender() {

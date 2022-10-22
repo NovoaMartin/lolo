@@ -57,7 +57,8 @@ public class Mapa implements Renderable {
         if (character instanceof Player p) {
             for (Enemigo e : enemigos) {
                 if (e.getPos().equals(target)) {
-                    e.atacar(p);
+//                    e.atacar(p);
+                    e.interactWith(p, direccion, this);
                     return;
                 }
             }

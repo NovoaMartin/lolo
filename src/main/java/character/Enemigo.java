@@ -12,4 +12,6 @@ public abstract class Enemigo extends Character{
 	String nombre;
 	
 	public abstract void atacar(Player player);
+
+	public abstract void interactWith(Player p, int direccion, Mapa mapa);
 }
