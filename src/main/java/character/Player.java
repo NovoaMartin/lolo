@@ -3,28 +3,45 @@ package character;
 import Utils.Celda;
 import Utils.Direccion;
 import graphics.Renderable;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 import lolo.Mapa;
 
 public class Player extends Character implements Renderable {
     private boolean winner = false;
     private boolean key = false;
 
+    private final ImageView image;
+
+    TranslateTransition animacion;
+
     public Player(Celda pos, Mapa mapa, int vidas) {
         super(pos, mapa, vidas);
-        shape = new Rectangle(45, 45);
-        shape.setTranslateY(2.5 + pos.y * 50);
-        shape.setTranslateX(2.5 + pos.x * 50);
-        shape.setFill(Color.GRAY);
+        image = new ImageView("file:src/main/resources/lolo.png");
+        image.setFitWidth(45);
+        image.setFitHeight(45);
+        image.setTranslateX(pos.x * 50 + 2.5);
+        image.setTranslateY(pos.y * 50 + 2.5);
     }
+
+    private boolean moving = false;
 
     public void tryMove(int direccion) {
         this.orientacion = direccion;
+        image.setRotate(Direccion.getRotation(direccion));
         if (alive && !winner)
             super.tryMove(direccion);
+    }
+
+    public void morir() {
+        super.morir();
+        FadeTransition ft = new FadeTransition(Duration.millis(500), image);
+        ft.setFromValue(1.0);
+        ft.setToValue(0.0);
+        ft.play();
     }
 
     public void takeKey() {
@@ -43,23 +60,35 @@ public class Player extends Character implements Renderable {
         return this.winner;
     }
 
-    Shape shape;
 
     @Override
     public Node getRender() {
-        return shape;
+        return image;
     }
 
     public void setEventListeners(Node node) {
         node.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case W -> {
-                    System.out.println("W");
-                    tryMove(Direccion.UP);
+                    if (!moving) {
+                        tryMove(Direccion.UP);
+                    }
                 }
-                case D -> tryMove(Direccion.RIGHT);
-                case S -> tryMove(Direccion.DOWN);
-                case A -> tryMove(Direccion.LEFT);
+                case S -> {
+                    if (!moving) {
+                        tryMove(Direccion.DOWN);
+                    }
+                }
+                case A -> {
+                    if (!moving) {
+                        tryMove(Direccion.LEFT);
+                    }
+                }
+                case D -> {
+                    if (!moving) {
+                        tryMove(Direccion.RIGHT);
+                    }
+                }
             }
         });
     }
@@ -68,15 +97,28 @@ public class Player extends Character implements Renderable {
 
     @Override
     public void setPos(Celda pos) {
+        moving=true;
+        animacion = new TranslateTransition(Duration.millis(500), image);
+        animacion.setOnFinished(e -> {
+            moving = false;
+            this.pos = pos;
+        });
         if (orientacion == Direccion.UP) {
-            shape.setTranslateY(2.5 + pos.y * 50);
+            animacion.setByY(-50);
+            animacion.play();
+            image.setTranslateY(2.5 + pos.y * 50);
         } else if (orientacion == Direccion.DOWN) {
-            shape.setTranslateY(2.5 + pos.y * 50);
+            animacion.setByY(50);
+            animacion.play();
+            image.setTranslateY(2.5 + pos.y * 50);
         } else if (orientacion == Direccion.LEFT) {
-            shape.setTranslateX(2.5 + pos.x * 50);
+            animacion.setByX(-50);
+            animacion.play();
+            image.setTranslateX(2.5 + pos.x * 50);
         } else if (orientacion == Direccion.RIGHT) {
-            shape.setTranslateX(2.5 + pos.x * 50);
+            animacion.setByX(50);
+            animacion.play();
+            image.setTranslateX(2.5 + pos.x * 50);
         }
-        this.pos = pos;
     }
 }
