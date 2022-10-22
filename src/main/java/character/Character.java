@@ -6,7 +6,7 @@ import lolo.Mapa;
 
 public abstract class Character implements Renderable {
     protected Celda pos;
-    private final Mapa mapa;
+    protected final Mapa mapa;
     private int vidas;
     protected boolean alive = true;
 

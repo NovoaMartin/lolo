@@ -6,9 +6,11 @@ import Utils.Direccion;
 import graphics.Renderable;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-import javafx.util.Duration;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import lolo.Mapa;
 
 public class Player extends Character implements Renderable {
@@ -19,6 +21,8 @@ public class Player extends Character implements Renderable {
 
     TranslateTransition animacion;
 
+    Shape magicalShot;
+
     public Player(Celda pos, Mapa mapa, int vidas) {
         super(pos, mapa, vidas);
         image = new ImageView("file:src/main/resources/lolo.png");
@@ -26,12 +30,13 @@ public class Player extends Character implements Renderable {
         image.setFitHeight(45);
         image.setTranslateX(pos.x * 50 + 2.5);
         image.setTranslateY(pos.y * 50 + 2.5);
+        magicalShot = new Rectangle(0, 0, 5, 5);
+        magicalShot.setVisible(false);
     }
 
     private boolean moving = false;
 
     public void tryMove(int direccion) {
-
         if (alive && !winner) {
             this.orientacion = direccion;
             image.setRotate(Direccion.getRotation(direccion));
@@ -44,11 +49,40 @@ public class Player extends Character implements Renderable {
         if (enemigo.equals("Medusa")) {
             image.setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
         } else {
-            FadeTransition ft = new FadeTransition(Constants.STONE_ANIMATION_DURATION, image);
+            FadeTransition ft = new FadeTransition(Constants.DEAD_ANIMATION_DURATION, image);
             ft.setFromValue(1.0);
             ft.setToValue(0.0);
             ft.play();
         }
+    }
+
+    private boolean attacking = false;
+
+    public void atacar() {
+        if(attacking)return;
+        attacking = true;
+        Enemigo enemigo = this.mapa.getAttackTarget(this, orientacion);
+        Celda target = enemigo.getPos();
+        int distance = target.distance(this.pos);
+        magicalShot.setTranslateY(this.pos.y * 50 + 2.5);
+        magicalShot.setTranslateX(this.pos.x * 50 + 2.5);
+        magicalShot.setVisible(true);
+        TranslateTransition animation = new TranslateTransition(Constants.MAGIC_ANIMATION_DURATION.multiply(distance), magicalShot);
+        if (orientacion == Direccion.UP) {
+            animation.setByY(-distance * 50);
+        } else if (orientacion == Direccion.DOWN) {
+            animation.setByY(distance * 50);
+        } else if (orientacion == Direccion.LEFT) {
+            animation.setByX(-distance * 50);
+        } else if (orientacion == Direccion.RIGHT) {
+            animation.setByX(distance * 50);
+        }
+        animation.play();
+        animation.setOnFinished(e -> {
+            magicalShot.setVisible(false);
+            enemigo.morir("Lolo");
+            attacking = false;
+        });
     }
 
     public void takeKey() {
@@ -70,7 +104,7 @@ public class Player extends Character implements Renderable {
 
     @Override
     public Node getRender() {
-        return image;
+        return new Group(image, magicalShot);
     }
 
     public void setEventListeners(Node node) {
@@ -94,6 +128,11 @@ public class Player extends Character implements Renderable {
                 case D -> {
                     if (!moving) {
                         tryMove(Direccion.RIGHT);
+                    }
+                }
+                case SPACE -> {
+                    if (!moving) {
+                        atacar();
                     }
                 }
             }

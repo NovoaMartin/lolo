@@ -26,8 +26,14 @@ public class Medusa extends Enemigo implements Renderable {
     }
 
     @Override
+    public void morir(String enemigo) {
+        super.morir(enemigo);
+        image.setVisible(false);
+    }
+
+    @Override
     public void interactWith(Player p, int direccion, Mapa mapa) {
-        atacar(p);
+        if (alive) atacar(p);
     }
 
     @Override
@@ -35,7 +41,12 @@ public class Medusa extends Enemigo implements Renderable {
         return image;
     }
 
-    public boolean canInteractWith(Player p) {
-        return p.getPos().distance(this.pos) <= 3;
+    public boolean canInteractWith(Celda p) {
+        return alive && p.distance(this.pos) <= 2;
+    }
+
+    @Override
+    public boolean canBeAttacked() {
+        return true;
     }
 }

@@ -15,7 +15,11 @@ public abstract class Enemigo extends Character {
 
     public abstract void interactWith(Player p, int direccion, Mapa mapa);
 
-    public boolean canInteractWith(Player p) {
+    public boolean canInteractWith(Celda p) {
+        return false;
+    }
+
+    public boolean canBeAttacked() {
         return false;
     }
 }

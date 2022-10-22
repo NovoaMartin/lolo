@@ -2,6 +2,7 @@ package lolo;
 
 
 import Utils.Celda;
+import Utils.Direccion;
 import character.Character;
 import character.Enemigo;
 import character.Enemigos.Medusa;
@@ -14,14 +15,10 @@ import enviroment.Wall;
 import graphics.Renderable;
 import items.Item;
 import items.Llave;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -62,7 +59,7 @@ public class Mapa implements Renderable {
 
         if (character instanceof Player p) {
             for (Enemigo e : enemigos) {
-                if (e.getPos().equals(target) || e.canInteractWith(p)) {
+                if (e.getPos().equals(target) || e.canInteractWith(target)) {
                     e.interactWith(p, direccion, this);
                     return;
                 }
@@ -254,5 +251,42 @@ public class Mapa implements Renderable {
 
     public void setEventListeners(Node node) {
         players.get(0).setEventListeners(node);
+    }
+
+    public Enemigo getAttackTarget(Player player, int orientacion) {
+        Celda from = player.getPos();
+        if (orientacion == Direccion.UP) {
+            Enemigo min = new Trampa(new Celda(from.x, -1), this, 1);
+            for (Enemigo e : enemigos) {
+                if (e.getPos().y < from.y && e.getPos().x == from.x && e.getPos().y > min.getPos().y && e.canBeAttacked()) {
+                    min = e;
+                }
+            }
+            return min;
+        } else if (orientacion == Direccion.DOWN) {
+            Enemigo min = new Trampa(new Celda(from.x, height), this, 1);
+            for (Enemigo e : enemigos) {
+                if (e.getPos().y > from.y && e.getPos().x == from.x && e.getPos().y < min.getPos().y && e.canBeAttacked()) {
+                    min = e;
+                }
+            }
+            return min;
+        } else if (orientacion == Direccion.LEFT) {
+            Enemigo min = new Trampa(new Celda(-1, from.y), this, 1);
+            for (Enemigo e : enemigos) {
+                if (e.getPos().x < from.x && e.getPos().y == from.y && e.getPos().x > min.getPos().x && e.canBeAttacked()) {
+                    min = e;
+                }
+            }
+            return min;
+        } else {
+            Enemigo min = new Trampa(new Celda(width, from.y), this, 1);
+            for (Enemigo e : enemigos) {
+                if (e.getPos().x > from.x && e.getPos().y == from.y && e.getPos().x < min.getPos().x && e.canBeAttacked()) {
+                    min = e;
+                }
+            }
+            return min;
+        }
     }
 }
