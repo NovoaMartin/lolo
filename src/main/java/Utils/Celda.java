@@ -37,4 +37,9 @@ public class Celda {
     public int hashCode() {
         return Objects.hash(x, y);
     }
+
+    public int distance(Celda pos) {
+        return (int) Math.ceil(Math.hypot(pos.x - x, pos.y - y));
+
+    }
 }

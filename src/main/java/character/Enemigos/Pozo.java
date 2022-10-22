@@ -21,7 +21,7 @@ public class Pozo extends Enemigo {
     @Override
     public void atacar(Player player) {
         player.setPos(this.pos);
-        player.morir();
+        player.morir("Pozo");
         System.out.println("Te has caido en un pozo");
     }
 

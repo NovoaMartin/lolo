@@ -4,6 +4,7 @@ package lolo;
 import Utils.Celda;
 import character.Character;
 import character.Enemigo;
+import character.Enemigos.Medusa;
 import character.Enemigos.Pozo;
 import character.Enemigos.Trampa;
 import character.Player;
@@ -16,9 +17,11 @@ import items.Llave;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,8 +62,7 @@ public class Mapa implements Renderable {
 
         if (character instanceof Player p) {
             for (Enemigo e : enemigos) {
-                if (e.getPos().equals(target)) {
-//                    e.atacar(p);
+                if (e.getPos().equals(target) || e.canInteractWith(p)) {
                     e.interactWith(p, direccion, this);
                     return;
                 }
@@ -175,6 +177,8 @@ public class Mapa implements Renderable {
             this.enemigos.add(new Pozo(new Celda(x, y), this, 1));
         } else if (type.equals("Trampa")) {
             this.enemigos.add(new Trampa(new Celda(x, y), this, 1));
+        } else if (type.equals("Medusa")) {
+            this.enemigos.add(new Medusa(new Celda(x, y), this, 1));
         }
     }
 
@@ -241,6 +245,7 @@ public class Mapa implements Renderable {
             root.getChildren().add(enemigo.getRender());
         }
         root.getChildren().add(players.get(0).getRender());
+
 
         root.setPrefHeight(height * 50);
         root.setPrefWidth(width * 50);

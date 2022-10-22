@@ -31,18 +31,24 @@ public class Player extends Character implements Renderable {
     private boolean moving = false;
 
     public void tryMove(int direccion) {
-        this.orientacion = direccion;
-        image.setRotate(Direccion.getRotation(direccion));
-        if (alive && !winner)
+
+        if (alive && !winner) {
+            this.orientacion = direccion;
+            image.setRotate(Direccion.getRotation(direccion));
             super.tryMove(direccion);
+        }
     }
 
-    public void morir() {
-        super.morir();
-        FadeTransition ft = new FadeTransition(Constants.DEAD_ANIMATION_DURATION, image);
-        ft.setFromValue(1.0);
-        ft.setToValue(0.0);
-        ft.play();
+    public void morir(String enemigo) {
+        super.morir(enemigo);
+        if (enemigo.equals("Medusa")) {
+            image.setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
+        } else {
+            FadeTransition ft = new FadeTransition(Constants.STONE_ANIMATION_DURATION, image);
+            ft.setFromValue(1.0);
+            ft.setToValue(0.0);
+            ft.play();
+        }
     }
 
     public void takeKey() {
@@ -98,7 +104,7 @@ public class Player extends Character implements Renderable {
 
     @Override
     public void setPos(Celda pos) {
-        moving=true;
+        moving = true;
         animacion = new TranslateTransition(Constants.MOVEMENT_ANIMATION_DURATION, image);
         animacion.setOnFinished(e -> {
             moving = false;

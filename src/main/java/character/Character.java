@@ -28,14 +28,14 @@ public abstract class Character implements Renderable {
         return pos;
     }
 
-    public void recibirDanio() {
+    public void recibirDanio(String enemigo) {
         this.vidas--;
         if (this.vidas <= 0) {
-            morir();
+            morir(enemigo);
         }
     }
 
-    public void morir() {
+    public void morir(String enemigo) {
         this.vidas = 0;
         this.alive = false;
     }
