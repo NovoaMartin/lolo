@@ -16,6 +16,9 @@ import items.Llave;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -208,7 +211,7 @@ public class Mapa implements Renderable {
     }
 
     Canvas canvas;
-    Group root = new Group();
+    Pane root = new BorderPane();
 
     public Node getRender() {
         if (canvas == null) {
@@ -219,7 +222,7 @@ public class Mapa implements Renderable {
                 }
             }
         }
-        root.getChildren().add(canvas);
+//        root.getChildren().add(canvas);
         for (Item[] items : this.items) {
             for (Item item : items) {
                 if (item != null) {
@@ -238,6 +241,9 @@ public class Mapa implements Renderable {
             root.getChildren().add(enemigo.getRender());
         }
         root.getChildren().add(players.get(0).getRender());
+
+        root.setPrefHeight(height * 50);
+        root.setPrefWidth(width * 50);
         return root;
     }
 
