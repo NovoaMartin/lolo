@@ -1,6 +1,7 @@
 package character;
 
 import Utils.Celda;
+import Utils.Constants;
 import Utils.Direccion;
 import graphics.Renderable;
 import javafx.animation.FadeTransition;
@@ -38,7 +39,7 @@ public class Player extends Character implements Renderable {
 
     public void morir() {
         super.morir();
-        FadeTransition ft = new FadeTransition(Duration.millis(500), image);
+        FadeTransition ft = new FadeTransition(Constants.DEAD_ANIMATION_DURATION, image);
         ft.setFromValue(1.0);
         ft.setToValue(0.0);
         ft.play();
@@ -98,7 +99,7 @@ public class Player extends Character implements Renderable {
     @Override
     public void setPos(Celda pos) {
         moving=true;
-        animacion = new TranslateTransition(Duration.millis(500), image);
+        animacion = new TranslateTransition(Constants.MOVEMENT_ANIMATION_DURATION, image);
         animacion.setOnFinished(e -> {
             moving = false;
             this.pos = pos;

@@ -1,6 +1,7 @@
 package enviroment;
 
 import Utils.Celda;
+import Utils.Constants;
 import Utils.Direccion;
 import character.Character;
 import javafx.animation.TranslateTransition;
@@ -46,7 +47,7 @@ public class MovableRock extends Enviroment {
     @Override
     public void setPos(Celda pos) {
         super.setPos(pos);
-        TranslateTransition animacion = new TranslateTransition(Duration.millis(500), image);
+        TranslateTransition animacion = new TranslateTransition(Constants.MOVEMENT_ANIMATION_DURATION, image);
         animacion.setToX(2.5 + pos.x * 50);
         animacion.setToY(2.5 + pos.y * 50);
         animacion.play();
