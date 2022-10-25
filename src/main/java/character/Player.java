@@ -108,35 +108,42 @@ public class Player extends Character implements Renderable {
     }
 
     public void setEventListeners(Node node) {
-        node.setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case W -> {
-                    if (!moving) {
-                        tryMove(Direccion.UP);
-                    }
-                }
-                case S -> {
-                    if (!moving) {
-                        tryMove(Direccion.DOWN);
-                    }
-                }
-                case A -> {
-                    if (!moving) {
-                        tryMove(Direccion.LEFT);
-                    }
-                }
-                case D -> {
-                    if (!moving) {
-                        tryMove(Direccion.RIGHT);
-                    }
-                }
-                case SPACE -> {
-                    if (!moving) {
-                        atacar();
-                    }
-                }
-            }
-        });
+    	node.setOnKeyPressed(e->{
+    		switch(e.getCode()) {
+    		case W: {
+    			if(!moving) {
+    				tryMove(Direccion.UP);
+    				break;
+    			}
+    		}
+    		case S:{
+    			if(!moving) {
+    				tryMove(Direccion.DOWN);
+    				break;
+    			}
+    		}
+    		case A:{
+    			if(!moving) {
+    				tryMove(Direccion.LEFT);
+    				break;
+    			}
+    		}
+    		case D:{
+    			if(!moving) {
+    				tryMove(Direccion.RIGHT);
+    				break;
+    			}
+    		}
+    		case SPACE:{
+    			if(!moving) {
+    				atacar();
+    				break;
+    			}
+    		}
+			default:
+				break;
+    		}
+    	});
     }
 
     private int orientacion = Direccion.DOWN;

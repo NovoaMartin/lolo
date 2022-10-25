@@ -1,11 +1,14 @@
-import Utils.Direccion;
+package lolo2.lolo2;
 import character.Player;
 import lolo.Mapa;
 
 import java.util.Scanner;
 
+import Utils.Direccion;
+import Utils.Pantalla;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main3(String[] args) {
         Pantalla.startGame();
     }
     public static void main2(String[] args) {

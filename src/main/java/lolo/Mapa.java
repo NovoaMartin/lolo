@@ -57,7 +57,8 @@ public class Mapa implements Renderable {
             return;
         }
 
-        if (character instanceof Player p) {
+        if (character instanceof Player) {
+        	Player p = (Player) character;
             for (Enemigo e : enemigos) {
                 if (e.isAlive() && e.getPos().equals(target) || e.canInteractWith(target)) {
                     e.interactWith(p, direccion, this);
@@ -74,8 +75,9 @@ public class Mapa implements Renderable {
         } else if (enviroments[target.x][target.y] != null) {
             enviroments[target.x][target.y].interactWith(character, direccion, this);
         } else if (target.equals(this.salida)) {
-            if (character instanceof Player p && ((Player) character).hasKey()) {
-                p.setWinner();
+            if (character instanceof Player && ((Player) character).hasKey()) {
+                Player p = (Player) character;
+            	p.setWinner();
                 System.out.println("Ganaste!");
             }
         } else {

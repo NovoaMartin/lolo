@@ -7,11 +7,11 @@ public class Direccion {
     public static final int RIGHT = 3;
 
     public static int getRotation(int direccion) {
-        return switch (direccion) {
-            case DOWN -> 0;
-            case LEFT -> 90;
-            case RIGHT -> 270;
-            default -> 180;
-        };
+    	switch (direccion) {
+		case DOWN: return 0;
+		case LEFT: return 90;
+		case RIGHT: return 270;
+		default: return 180;
+		}
     }
 }
