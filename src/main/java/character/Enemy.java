@@ -13,7 +13,7 @@ public abstract class Enemy extends Character{
 	
 	public abstract void attack(Player player);
     
-    public String getAlliance() {
-    	return "ENEMY";
-    }
+	public boolean isPlayer() {
+		return false;
+	}
 }

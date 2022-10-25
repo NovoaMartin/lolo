@@ -50,7 +50,7 @@ public class GameMap {
         	players.stream().anyMatch(c -> c.getPos().equals(target) && c != character))
             return;
 
-        if (character.getAlliance() == "PLAYER") {
+        if (character.isPlayer()) {
             for (Enemy e : enemies) {
                 if (e.getPos().equals(target)) {
                     e.attack((Player)character);
@@ -67,7 +67,7 @@ public class GameMap {
         } else if (environments[target.x][target.y] != null) {
             environments[target.x][target.y].interactWith(character, direction, this);
         } else if (target.equals(this.exit)) {
-            if (character.getAlliance() == "PLAYER" && ((Player) character).hasKey()) {
+            if (character.isPlayer() && ((Player) character).hasKey()) {
                 ((Player)character).setWinner();
                 //System.out.println("Ganaste!");
             }

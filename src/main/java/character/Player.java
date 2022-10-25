@@ -32,7 +32,7 @@ public class Player extends Character {
         return this.winner;
     }
     
-    public String getAlliance() {
-    	return "PLAYER";
+    public boolean isPlayer() {
+    	return true;
     }
 }

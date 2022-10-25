@@ -46,6 +46,5 @@ public abstract class Character {
         return lives;
     }
     
-    // TODO: Hacerlo un enum?
-    abstract public String getAlliance();
+    abstract public boolean isPlayer();
 }

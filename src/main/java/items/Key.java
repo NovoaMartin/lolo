@@ -13,7 +13,7 @@ public class Key extends Item{
 
     @Override
     public void interactWith(Character character, int direction, GameMap map) {
-        if (character.getAlliance() == "PLAYER") {
+        if (character.isPlayer()) {
             ((Player)character).takeKey();
         }
         this.valid = false;
