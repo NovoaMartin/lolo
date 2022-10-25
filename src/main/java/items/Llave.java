@@ -25,6 +25,7 @@ public class Llave extends Item {
         if (character instanceof Player) {
             ((Player) character).takeKey();
             this.image.setOpacity(0.3);
+            mapa.getExit().increaseKeyCount();
         }
         this.valid = false;
     }

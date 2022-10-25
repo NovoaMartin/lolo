@@ -35,6 +35,18 @@ public abstract class Character implements Renderable {
         }
     }
 
+    public boolean canWin() {
+        return false;
+    }
+
+    public boolean hasWinCondition(){
+        return false;
+    }
+
+    public boolean win(){
+        return false;
+    }
+
     public void morir(String enemigo) {
         this.vidas = 0;
         this.alive = false;

@@ -93,8 +93,20 @@ public class Player extends Character implements Renderable {
         return this.key;
     }
 
-    public void setWinner() {
+    public boolean win() {
         this.winner = true;
+        this.mapa.win();
+        return true;
+    }
+
+    @Override
+    public boolean canWin() {
+        return true;
+    }
+
+    @Override
+    public boolean hasWinCondition() {
+        return this.hasKey();
     }
 
     public boolean isWinner() {
