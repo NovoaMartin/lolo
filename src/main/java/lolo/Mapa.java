@@ -3,6 +3,7 @@ package lolo;
 
 import Utils.Celda;
 import Utils.Direccion;
+import Utils.Pantalla;
 import character.Character;
 import character.Enemigo;
 import character.Enemigos.Medusa;
@@ -10,15 +11,20 @@ import character.Enemigos.Pozo;
 import character.Enemigos.Trampa;
 import character.Player;
 import enviroment.Enviroment;
+import enviroment.Exit;
 import enviroment.MovableRock;
-import enviroment.Wall;
+import enviroment.UnmovableEnvironment;
 import graphics.Renderable;
 import items.Item;
 import items.Llave;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,10 +42,15 @@ public class Mapa implements Renderable {
 
     private final ArrayList<Enemigo> enemigos;
 
-    private Celda salida;
+    private Exit exit;
 
+    private final String mapFile;
+    private String nextMap;
+    Pantalla pantalla;
 
-    public Mapa(String mapName) {
+    public Mapa(String mapName, Pantalla pantalla) {
+        this.mapFile = mapName;
+        this.pantalla = pantalla;
         this.enemigos = new ArrayList<Enemigo>();
         this.players = new ArrayList<Player>();
         try {
@@ -58,7 +69,7 @@ public class Mapa implements Renderable {
         }
 
         if (character instanceof Player) {
-        	Player p = (Player) character;
+            Player p = (Player) character;
             for (Enemigo e : enemigos) {
                 if (e.isAlive() && e.getPos().equals(target) || e.canInteractWith(target)) {
                     e.interactWith(p, direccion, this);
@@ -74,12 +85,6 @@ public class Mapa implements Renderable {
             }
         } else if (enviroments[target.x][target.y] != null) {
             enviroments[target.x][target.y].interactWith(character, direccion, this);
-        } else if (target.equals(this.salida)) {
-            if (character instanceof Player && ((Player) character).hasKey()) {
-                Player p = (Player) character;
-            	p.setWinner();
-                System.out.println("Ganaste!");
-            }
         } else {
             character.setPos(target);
         }
@@ -89,8 +94,7 @@ public class Mapa implements Renderable {
         Celda from = enviroment.getPos();
         Celda target = enviroment.getPos().translate(direccion);
         if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height ||
-                players.stream().anyMatch(c -> c.getPos().equals(target))
-                || target.equals(this.salida)) {
+                players.stream().anyMatch(c -> c.getPos().equals(target))) {
             return false;
         }
         Optional<Enemigo> enemigo = enemigos.stream().filter(e -> e.getPos().equals(target)).findFirst();
@@ -118,13 +122,13 @@ public class Mapa implements Renderable {
         Scanner scanner = new Scanner(new File("mapas/" + mapName));
         this.width = scanner.nextInt();
         this.height = scanner.nextInt();
-        this.salida = new Celda(scanner.nextInt(), scanner.nextInt());
+        this.items = new Item[this.width][this.height];
+        this.enviroments = new Enviroment[this.width][this.height];
+        addEnvironment("Exit", scanner.nextInt(), scanner.nextInt());
 
         int numItems = scanner.nextInt();
         int numEnviroments = scanner.nextInt();
         int numEnemigos = scanner.nextInt();
-        this.items = new Item[this.width][this.height];
-        this.enviroments = new Enviroment[this.width][this.height];
 
         this.players.add(new Player(new Celda(scanner.nextInt(), scanner.nextInt()), this, scanner.nextInt()));
 
@@ -146,15 +150,20 @@ public class Mapa implements Renderable {
             int y = scanner.nextInt();
             addEnemigo(type, x, y);
         }
-        scanner.close();
+
         for (int i = 0; i < this.width; i++) {
-            this.enviroments[i][0] = new Wall(new Celda(i, 0));
-            this.enviroments[i][this.height - 1] = new Wall(new Celda(i, this.height - 1));
+            this.enviroments[i][0] = new UnmovableEnvironment(new Celda(i, 0), Direccion.DOWN);
+            this.enviroments[i][this.height - 1] = new UnmovableEnvironment(new Celda(i, this.height - 1), Direccion.UP);
         }
         for (int i = 0; i < this.height; i++) {
-            this.enviroments[0][i] = new Wall(new Celda(0, i));
-            this.enviroments[this.width - 1][i] = new Wall(new Celda(this.width - 1, i));
+            this.enviroments[0][i] = new UnmovableEnvironment(new Celda(0, i), Direccion.RIGHT);
+            this.enviroments[this.width - 1][i] = new UnmovableEnvironment(new Celda(this.width - 1, i), Direccion.LEFT);
         }
+
+        if (scanner.hasNext()) {
+            this.nextMap = scanner.next();
+        }
+        scanner.close();
     }
 
     private void addItem(String type, int x, int y) {
@@ -164,68 +173,37 @@ public class Mapa implements Renderable {
     }
 
     private void addEnvironment(String type, int x, int y) {
-        if (type.equals("enviroment.Wall")) {
-            this.enviroments[x][y] = new Wall(new Celda(x, y));
-        } else if (type.equals("enviroment.MovableRock")) {
-            this.enviroments[x][y] = new MovableRock(new Celda(x, y));
+        switch (type) {
+            case "enviroment.Rock":
+                this.enviroments[x][y] = new UnmovableEnvironment(new Celda(x, y), Direccion.DOWN, "Rock");
+                break;
+            case "enviroment.MovableRock":
+                this.enviroments[x][y] = new MovableRock(new Celda(x, y));
+                break;
+            case "Exit":
+                exit = new Exit(new Celda(x, y));
+                this.enviroments[x][y] = exit;
+                break;
         }
     }
 
     private void addEnemigo(String type, int x, int y) {
-        if (type.equals("Pozo")) {
-            this.enemigos.add(new Pozo(new Celda(x, y), this, 1));
-        } else if (type.equals("Trampa")) {
-            this.enemigos.add(new Trampa(new Celda(x, y), this, 1));
-        } else if (type.equals("Medusa")) {
-            this.enemigos.add(new Medusa(new Celda(x, y), this, 1));
+        switch (type) {
+            case "Pozo":
+                this.enemigos.add(new Pozo(new Celda(x, y), this, 1));
+                break;
+            case "Trampa":
+                this.enemigos.add(new Trampa(new Celda(x, y), this, 1));
+                break;
+            case "Medusa":
+                this.enemigos.add(new Medusa(new Celda(x, y), this, 1));
+                break;
         }
     }
 
-    public void printMap() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                int finalI = i;
-                int finalJ = j;
-                Optional<Enemigo> enemigo = enemigos.stream().filter(e -> e.getPos().equals(new Celda(finalJ, finalI))).findFirst();
-
-                if (items[j][i] != null) {
-                    System.out.print("I");
-                } else if (enviroments[j][i] != null) {
-                    if (enviroments[j][i] instanceof MovableRock) {
-                        System.out.print("R");
-                    } else {
-                        System.out.print("#");
-                    }
-                } else if (players.get(0).getPos().x == j && players.get(0).getPos().y == i) {
-                    System.out.print("J");
-                } else if (salida.x == j && salida.y == i) {
-                    System.out.print("S");
-                } else if (enemigo.isPresent()) {
-                    if (enemigo.get() instanceof Pozo)
-                        System.out.print("P");
-                    else if (enemigo.get() instanceof Trampa)
-                        System.out.print("T");
-                } else {
-                    System.out.print("_");
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    Canvas canvas;
     Pane root = new BorderPane();
 
     public Node getRender() {
-        if (canvas == null) {
-            canvas = new Canvas(width * 50, height * 50);
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    canvas.getGraphicsContext2D().strokeRect(i * 50, j * 50, 50, 50);
-                }
-            }
-        }
-//        root.getChildren().add(canvas);
         for (Item[] items : this.items) {
             for (Item item : items) {
                 if (item != null) {
@@ -244,15 +222,29 @@ public class Mapa implements Renderable {
             root.getChildren().add(enemigo.getRender());
         }
         root.getChildren().add(players.get(0).getRender());
-
-
         root.setPrefHeight(height * 50);
         root.setPrefWidth(width * 50);
+
+        BackgroundImage floor = new BackgroundImage(new Image("file:src/main/resources/floor.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
+        root.setBackground(new Background(floor));
         return root;
+    }
+
+    public Exit getExit() {
+        return exit;
     }
 
     public void setEventListeners(Node node) {
         players.get(0).setEventListeners(node);
+        //Exit on ESC
+        node.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                System.exit(0);
+            } else if (event.getCode() == KeyCode.R) {
+                pantalla.createView(this.mapFile);
+            }
+        });
     }
 
     public Enemigo getAttackTarget(Player player, int orientacion) {
@@ -290,5 +282,20 @@ public class Mapa implements Renderable {
             }
             return min;
         }
+    }
+
+    public void win() {
+        if (nextMap != null) {
+            pantalla.createView(nextMap);
+            return;
+        }
+        this.root.getChildren().clear();
+        Text text = new Text("Victoria!");
+        text.setFont(new Font(50));
+        text.setFill(Color.WHITE);
+        text.setTranslateX(root.getPrefWidth() / 2 - 100);
+        text.setTranslateY(root.getPrefHeight() / 2 - 25);
+        this.root.getChildren().add(text);
+        root.setOnKeyPressed(e -> System.exit(0));
     }
 }
