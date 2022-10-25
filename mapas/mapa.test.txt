@@ -6,7 +6,7 @@ items.Llave 1 3
 enviroment.MovableRock 3 3
 enviroment.MovableRock 4 5
 enviroment.MovableRock 6 4
-enviroment.Wall 5 5
+enviroment.Rock 5 5
 Trampa 5 1
 Pozo 6 1
 Pozo 7 4
