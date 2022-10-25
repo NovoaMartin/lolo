@@ -1,5 +1,6 @@
 import Utils.Celda;
 import Utils.Direccion;
+import Utils.Pantalla;
 import character.Player;
 import enviroment.MovableRock;
 import lolo.Mapa;
@@ -14,7 +15,7 @@ public class MovableRockTest {
 
     @Before
     public void setUp() {
-        m = new Mapa("mapa.test.txt");
+        m = new Mapa("mapa.test.txt", new Pantalla());
         rock = new MovableRock(new Celda(3, 3));
     }
 

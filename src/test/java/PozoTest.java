@@ -1,6 +1,6 @@
 import Utils.Celda;
+import Utils.Pantalla;
 import character.Enemigos.Pozo;
-import character.Enemigos.Trampa;
 import character.Player;
 import lolo.Mapa;
 import org.junit.Before;
@@ -16,7 +16,7 @@ public class PozoTest {
 
     @Before
     public void setUp() {
-        m = new Mapa("mapa.test.txt");
+        m = new Mapa("mapa.test.txt", new Pantalla());
         p = m.getPlayer();
         t = new Pozo(new Celda(1, 1), m, 3);
     }

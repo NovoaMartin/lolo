@@ -1,5 +1,6 @@
 import Utils.Celda;
 import Utils.Direccion;
+import Utils.Pantalla;
 import character.Player;
 import items.Llave;
 import lolo.Mapa;
@@ -12,7 +13,7 @@ public class LlaveTest {
     @Test
     public void testInteractWith() {
         new Thread(Pantalla::startGame).start();
-        Mapa m = new Mapa("mapa.test.txt");
+        Mapa m = new Mapa("mapa.test.txt", new Pantalla());
         Llave l = new Llave(new Celda(1, 1));
         Player p = new Player(new Celda(2, 1), m, 3);
         l.interactWith(p, Direccion.DOWN, m);

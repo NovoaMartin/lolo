@@ -1,4 +1,5 @@
 import Utils.Celda;
+import Utils.Pantalla;
 import character.Enemigos.Trampa;
 import character.Player;
 import lolo.Mapa;
@@ -15,7 +16,7 @@ public class TrampaTest {
 
     @Before
     public void setUp() {
-        m = new Mapa("mapa.test.txt");
+        m = new Mapa("mapa.test.txt", new Pantalla());
         p = m.getPlayer();
         t = new Trampa(new Celda(1, 1), m, 3);
     }
