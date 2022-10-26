@@ -22,6 +22,8 @@ public class Pantalla extends Application {
 
     @Override
     public void start(Stage stage) {
+        stage.setX(0);
+        stage.setY(0);
         this.stage = stage;
         Mapa m = createView(originalMap);
         stage.addEventHandler(KeyEvent.KEY_PRESSED, e->{
