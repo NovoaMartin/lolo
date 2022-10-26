@@ -23,6 +23,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -201,7 +203,7 @@ public class Mapa implements Renderable {
         }
     }
 
-    Pane root = new BorderPane();
+    BorderPane root = new BorderPane();
 
     public Node getRender() {
         for (Item[] items : this.items) {
@@ -293,9 +295,18 @@ public class Mapa implements Renderable {
         Text text = new Text("Victoria!");
         text.setFont(new Font(50));
         text.setFill(Color.WHITE);
-        text.setTranslateX(root.getPrefWidth() / 2 - 100);
-        text.setTranslateY(root.getPrefHeight() / 2 - 25);
-        this.root.getChildren().add(text);
+        this.root.setCenter(text);
+        root.setOnKeyPressed(e -> System.exit(0));
+    }
+
+    public void lose(String enemigo) {
+        Shape rect = new Rectangle(root.getPrefWidth(), root.getPrefHeight());
+        rect.setFill(Color.gray(0, 0.5));
+        this.root.getChildren().add(rect);
+        Text text = new Text("Perdiste!\nMoriste por: " + enemigo + "\nPresiona R para reiniciar el nivel");
+        text.setFont(new Font(50));
+        text.setFill(Color.RED);
+        root.setCenter(text);
         root.setOnKeyPressed(e -> System.exit(0));
     }
 }
