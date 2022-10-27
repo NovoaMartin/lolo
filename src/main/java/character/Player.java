@@ -96,6 +96,7 @@ public class Player extends Character implements Renderable {
             @Override
             protected void interpolate(double frac) {
             }
+
             {
                 setCycleDuration(Constants.DEAD_ANIMATION_DURATION.multiply(3));
             }
@@ -106,6 +107,7 @@ public class Player extends Character implements Renderable {
 
     @Override
     public void recibirDanio(String enemigo) {
+        if (!alive) return;
         super.recibirDanio(enemigo);
         image.setEffect(new javafx.scene.effect.ColorAdjust(0, 0, -0.5, 0));
         new Thread(() -> {

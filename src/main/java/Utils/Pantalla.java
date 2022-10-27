@@ -9,6 +9,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lolo.Mapa;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Pantalla extends Application {
     private static final boolean TECLADO = true;
 
@@ -19,35 +22,51 @@ public class Pantalla extends Application {
     private Stage stage;
 
     private final String originalMap = "mapa.1.txt";
+    Mapa mapaActual = null;
 
     @Override
     public void start(Stage stage) {
         stage.setX(0);
         stage.setY(0);
         this.stage = stage;
-        Mapa m = createView(originalMap);
-        stage.addEventHandler(KeyEvent.KEY_PRESSED, e->{
-            if(e.getCode()== KeyCode.T){
-                createView(originalMap);
+        mapaActual = createView(originalMap);
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.T) {
+                mapaActual = createView(originalMap);
             }
         });
+        stage.setOnCloseRequest(e -> System.exit(0));
 
         if (!TECLADO)
             new Thread(() -> {
                 try {
                     int sleepTime = ((int) Constants.MOVEMENT_ANIMATION_DURATION.toMillis() + 50);
-                    m.getPlayer().tryMove(Direccion.DOWN);
+                    mapaActual.getPlayer().tryMove(Direccion.DOWN);
                     Thread.sleep(sleepTime);
-                    m.getPlayer().tryMove(Direccion.DOWN);
+                    mapaActual.getPlayer().tryMove(Direccion.DOWN);
                     Thread.sleep(sleepTime);
-                    m.getPlayer().tryMove(Direccion.DOWN);
+                    mapaActual.getPlayer().tryMove(Direccion.DOWN);
                     Thread.sleep(sleepTime);
-                    m.getPlayer().tryMove(Direccion.DOWN);
+                    mapaActual.getPlayer().tryMove(Direccion.DOWN);
                 } catch (Exception e) {
                     System.exit(2);
                 }
             }).start();
+    }
 
+
+    Timer updateTimer;
+
+    private void createUpdateTimer(Mapa m) {
+        if(updateTimer != null)
+            updateTimer.cancel();
+        updateTimer = new Timer();
+        updateTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                m.update();
+            }
+        }, 0, 1000);
     }
 
     public Mapa createView(String mapFile) {
@@ -62,6 +81,8 @@ public class Pantalla extends Application {
         stage.setScene(sc);
         stage.setTitle("Pantalla");
         pane.requestFocus();
+
+        createUpdateTimer(m);
 
         stage.show();
         return m;

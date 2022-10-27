@@ -7,6 +7,7 @@ import Utils.Pantalla;
 import character.Character;
 import character.Enemigo;
 import character.Enemigos.Medusa;
+import character.Enemigos.MovingThing;
 import character.Enemigos.Pozo;
 import character.Enemigos.Trampa;
 import character.Player;
@@ -15,6 +16,7 @@ import enviroment.Exit;
 import enviroment.MovableRock;
 import enviroment.UnmovableEnvironment;
 import graphics.Renderable;
+import graphics.Updatable;
 import items.Item;
 import items.Llave;
 import javafx.scene.Node;
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class Mapa implements Renderable {
+public class Mapa implements Renderable, Updatable {
     private int width;
     private int height;
 
@@ -66,7 +68,7 @@ public class Mapa implements Renderable {
 
     public void tryMove(Character character, int direccion) {
         Celda target = character.getPos().translate(direccion);
-        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height || players.stream().anyMatch(c -> c.getPos().equals(target) && c != character)) {
+        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height) {
             return;
         }
 
@@ -74,6 +76,14 @@ public class Mapa implements Renderable {
             Player p = (Player) character;
             for (Enemigo e : enemigos) {
                 if (e.isAlive() && e.getPos().equals(target) || e.canInteractWith(target)) {
+                    e.interactWith(p, direccion, this);
+                    return;
+                }
+            }
+        } else {
+            Enemigo e = (Enemigo) character;
+            for (Player p : players) {
+                if (p.getPos().equals(target)) {
                     e.interactWith(p, direccion, this);
                     return;
                 }
@@ -200,6 +210,9 @@ public class Mapa implements Renderable {
             case "Medusa":
                 this.enemigos.add(new Medusa(new Celda(x, y), this, 1));
                 break;
+            case "MovingThing":
+                this.enemigos.add(new MovingThing(new Celda(x, y), this, 1));
+                break;
         }
     }
 
@@ -308,5 +321,12 @@ public class Mapa implements Renderable {
         text.setFill(Color.RED);
         root.setCenter(text);
         root.setOnKeyPressed(e -> System.exit(0));
+    }
+
+    @Override
+    public void update() {
+        for (Enemigo enemigo : enemigos) {
+            enemigo.update();
+        }
     }
 }
