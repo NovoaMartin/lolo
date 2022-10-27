@@ -1,15 +1,17 @@
 package character;
 
-import Utils.Celda;
 import lolo.Mapa;
+import utils.Celda;
 
 public abstract class Enemigo extends Character {
-    public Enemigo(Celda pos, Mapa mapa, int vidas, String nombre) {
-        super(pos, mapa, vidas);
+
+	private String nombre;
+	
+    public Enemigo(int x, int y, int vidas, String nombre) {
+        super(x, y, vidas);
         this.nombre = nombre;
     }
 
-    String nombre;
 
     public abstract void atacar(Player player);
 

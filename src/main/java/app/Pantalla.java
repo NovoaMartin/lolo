@@ -1,13 +1,16 @@
-package Utils;
+package app;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lolo.Mapa;
+import utils.Constants;
+import utils.Direction;
+import utils.FileMap;
 
 public class Pantalla extends Application {
     private static final boolean TECLADO = true;
@@ -18,17 +21,17 @@ public class Pantalla extends Application {
 
     private Stage stage;
 
-    private final String originalMap = "mapa.1.txt";
+    private final String originalMap = "Dibujo.txt";
 
     @Override
     public void start(Stage stage) {
         stage.setX(0);
         stage.setY(0);
         this.stage = stage;
-        Mapa m = createView(originalMap);
+        Mapa m = createView();
         stage.addEventHandler(KeyEvent.KEY_PRESSED, e->{
             if(e.getCode()== KeyCode.T){
-                createView(originalMap);
+                createView();
             }
         });
 
@@ -36,13 +39,13 @@ public class Pantalla extends Application {
             new Thread(() -> {
                 try {
                     int sleepTime = ((int) Constants.MOVEMENT_ANIMATION_DURATION.toMillis() + 50);
-                    m.getPlayer().tryMove(Direccion.DOWN);
+                    m.tryMove(m.getPlayer(), Direction.DOWN);
                     Thread.sleep(sleepTime);
-                    m.getPlayer().tryMove(Direccion.DOWN);
+                    m.tryMove(m.getPlayer(), Direction.DOWN);
                     Thread.sleep(sleepTime);
-                    m.getPlayer().tryMove(Direccion.DOWN);
+                    m.tryMove(m.getPlayer(), Direction.DOWN);
                     Thread.sleep(sleepTime);
-                    m.getPlayer().tryMove(Direccion.DOWN);
+                    m.tryMove(m.getPlayer(), Direction.DOWN);
                 } catch (Exception e) {
                     System.exit(2);
                 }
@@ -50,9 +53,10 @@ public class Pantalla extends Application {
 
     }
 
-    public Mapa createView(String mapFile) {
+    public Mapa createView() {
         BorderPane pane = new BorderPane();
-        Mapa m = new Mapa(mapFile, this);
+        Mapa m = FileMap.loadMap(originalMap);
+        System.out.println(m);
         pane.setCenter(m.getRender());
 
         m.setEventListeners(pane);

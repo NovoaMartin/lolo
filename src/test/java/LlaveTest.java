@@ -1,10 +1,12 @@
-import Utils.Celda;
-import Utils.Direccion;
-import Utils.Pantalla;
 import character.Player;
-import items.Llave;
+import items.Key;
 import lolo.Mapa;
+import utils.Celda;
+import utils.Direction;
+
 import org.junit.Test;
+
+import app.Pantalla;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,9 +16,9 @@ public class LlaveTest {
     public void testInteractWith() {
         new Thread(Pantalla::startGame).start();
         Mapa m = new Mapa("mapa.test.txt", new Pantalla());
-        Llave l = new Llave(new Celda(1, 1));
+        Key l = new Key(new Celda(1, 1));
         Player p = new Player(new Celda(2, 1), m, 3);
-        l.interactWith(p, Direccion.DOWN, m);
+        l.interactWith(p, Direction.DOWN, m);
         assertTrue(p.hasKey());
         assertFalse(l.isValid());
     }

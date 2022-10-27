@@ -1,20 +1,18 @@
-package character.Enemigos;
+package character;
 
-import Utils.Celda;
-import character.Enemigo;
-import character.Player;
 import graphics.Renderable;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import lolo.Mapa;
+import utils.Celda;
 
 public class Medusa extends Enemigo implements Renderable {
     ImageView image = new ImageView("file:src/main/resources/medusa.png");
 
-    public Medusa(Celda pos, Mapa mapa, int vidas) {
-        super(pos, mapa, vidas, "Medusa");
-        image.setTranslateY(2.5 + pos.y * 50);
-        image.setTranslateX(2.5 + pos.x * 50);
+    public Medusa(int x, int y, Mapa mapa, int vidas) {
+        super(x, y, vidas, "Medusa");
+        image.setTranslateX(2.5 + x * 50);
+        image.setTranslateY(2.5 + y * 50);
         image.setFitHeight(45);
         image.setFitWidth(45);
     }
@@ -42,7 +40,7 @@ public class Medusa extends Enemigo implements Renderable {
     }
 
     public boolean canInteractWith(Celda p) {
-        return alive && p.distance(this.pos) <= 2;
+        return alive && distance(p) <= 2;
     }
 
     @Override

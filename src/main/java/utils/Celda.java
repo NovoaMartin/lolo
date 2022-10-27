@@ -1,24 +1,31 @@
-package Utils;
+package utils;
 
 import java.util.Objects;
 
-public class Celda {
+import graphics.Renderable;
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+
+public class Celda implements Renderable, Interactable, Movable{
+	
     public final int x;
     public final int y;
-
+    
+    protected ImageView image;
+    
     public Celda(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     public Celda translate(int direccion) {
-        if (direccion == Direccion.UP) {
+        if (direccion == Direction.UP) {
             return new Celda(x, y - 1);
-        } else if (direccion == Direccion.DOWN) {
+        } else if (direccion == Direction.DOWN) {
             return new Celda(x, y + 1);
-        } else if (direccion == Direccion.LEFT) {
+        } else if (direccion == Direction.LEFT) {
             return new Celda(x - 1, y);
-        } else if (direccion == Direccion.RIGHT) {
+        } else if (direccion == Direction.RIGHT) {
             return new Celda(x + 1, y);
         } else {
             return null;
@@ -42,4 +49,27 @@ public class Celda {
         return (int) Math.ceil(Math.hypot(pos.x - x, pos.y - y));
 
     }
+
+	@Override
+	public Node getRender() {
+		return image;
+	}
+
+	@Override
+	public void interactWith(Celda target) {
+		
+	}
+
+	@Override
+	public void tryMove(Celda pos, int dir) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setPos(Celda pos) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

@@ -1,25 +1,12 @@
 package enviroment;
 
-import Utils.Celda;
-import character.Character;
 import graphics.Renderable;
-import lolo.Mapa;
+import utils.Celda;
 
-public abstract class Enviroment implements Renderable {
-    protected Celda pos;
-    protected Mapa mapa;
+public abstract class Enviroment extends Celda implements Renderable {
 
-    public Enviroment(Celda pos) {
-        this.pos = pos;
-    }
+	public Enviroment(int x, int y) {
+		super(x, y);
+	}
 
-    public abstract void interactWith(Character character, int direccion, Mapa mapa);
-
-    public void setPos(Celda pos) {
-        this.pos = pos;
-    }
-
-    public Celda getPos() {
-        return pos;
-    }
 }

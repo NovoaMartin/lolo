@@ -1,4 +1,4 @@
-package lolo2.lolo2;
+package app;
 
 public class SystemInfo {
 

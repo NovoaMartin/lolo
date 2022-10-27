@@ -1,31 +1,16 @@
 package character;
 
-import Utils.*;
 import graphics.Renderable;
-import lolo.Mapa;
+import utils.Celda;
 
-public abstract class Character implements Renderable {
-    protected Celda pos;
-    protected final Mapa mapa;
+public abstract class Character extends Celda implements Renderable {
+
     private int vidas;
     protected boolean alive = true;
 
-    public Character(Celda pos, Mapa mapa, int vidas) {
-        this.pos = pos;
-        this.mapa = mapa;
+    public Character(int x, int y, int vidas) {
+    	super(x, y);
         this.vidas = vidas;
-    }
-
-    public void tryMove(int direccion) {
-        this.mapa.tryMove(this, direccion);
-    }
-
-    public void setPos(Celda pos) {
-        this.pos = pos;
-    }
-
-    public Celda getPos() {
-        return pos;
     }
 
     public void recibirDanio(String enemigo) {

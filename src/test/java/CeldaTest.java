@@ -1,8 +1,9 @@
-import Utils.Celda;
-import Utils.Direccion;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import utils.Celda;
+import utils.Direction;
 
 public class CeldaTest {
     Celda celda;
@@ -14,10 +15,10 @@ public class CeldaTest {
 
     @Test
     public void translateTest() {
-        Celda up = celda.translate(Direccion.UP);
-        Celda down = celda.translate(Direccion.DOWN);
-        Celda left = celda.translate(Direccion.LEFT);
-        Celda right = celda.translate(Direccion.RIGHT);
+        Celda up = celda.translate(Direction.UP);
+        Celda down = celda.translate(Direction.DOWN);
+        Celda left = celda.translate(Direction.LEFT);
+        Celda right = celda.translate(Direction.RIGHT);
         Celda invalid = celda.translate(42);
         Assert.assertEquals(new Celda(0, -1), up);
         Assert.assertEquals(new Celda(0, 1), down);

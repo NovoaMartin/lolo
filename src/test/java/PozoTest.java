@@ -1,10 +1,12 @@
-import Utils.Celda;
-import Utils.Pantalla;
-import character.Enemigos.Pozo;
+import character.Hole;
 import character.Player;
 import lolo.Mapa;
+import utils.Celda;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import app.Pantalla;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -12,13 +14,13 @@ import static org.junit.Assert.assertFalse;
 public class PozoTest {
     Mapa m;
     Player p;
-    Pozo t;
+    Hole t;
 
     @Before
     public void setUp() {
         m = new Mapa("mapa.test.txt", new Pantalla());
         p = m.getPlayer();
-        t = new Pozo(new Celda(1, 1), m, 3);
+        t = new Hole(new Celda(1, 1), m, 3);
     }
 
     @Test

@@ -1,19 +1,15 @@
 package items;
 
-import Utils.Celda;
-import character.Character;
 import graphics.Renderable;
-import lolo.Mapa;
+import utils.Celda;
 
-public abstract class Item implements Renderable {
-    protected Celda pos;
+public abstract class Item extends Celda implements Renderable {
+
     protected boolean valid = true;
 
-    public Item(Celda pos) {
-        this.pos = pos;
+    public Item(int x, int y) {
+        super(x, y);
     }
-    
-    public abstract void interactWith(Character character, int direccion, Mapa mapa);
 
     public boolean isValid() {
         return valid;

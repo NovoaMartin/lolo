@@ -1,12 +1,14 @@
-import Utils.Celda;
-import Utils.Direccion;
-import Utils.Pantalla;
 import character.Player;
 import enviroment.MovableRock;
 import enviroment.UnmovableEnvironment;
 import lolo.Mapa;
+import utils.Celda;
+import utils.Direction;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import app.Pantalla;
 
 import static org.junit.Assert.*;
 
@@ -23,14 +25,14 @@ public class MapaTest {
     @Test
     public void elJugadorSeMueveEnCeldasVacias() {
         Celda posicionInicial = player.getPos();
-        mapa.tryMove(player, Direccion.DOWN);
-        assertEquals(posicionInicial.translate(Direccion.DOWN), player.getPos());
+        mapa.tryMove(player, Direction.DOWN);
+        assertEquals(posicionInicial.translate(Direction.DOWN), player.getPos());
     }
 
     @Test
     public void elJugadorNoSeMueveEnCeldasOcupadas() {
         Celda posicionInicial = player.getPos();
-        mapa.tryMove(player, Direccion.UP);
+        mapa.tryMove(player, Direction.UP);
         assertEquals(posicionInicial, player.getPos());
     }
 
@@ -38,7 +40,7 @@ public class MapaTest {
     public void elJugadorObtieneLaLlaveAlMoverse() {
         player.setPos(new Celda(1, 2));
         assertFalse(player.hasKey());
-        player.tryMove(Direccion.DOWN);
+        player.tryMove(Direction.DOWN);
         assertTrue(player.hasKey());
     }
 
@@ -46,7 +48,7 @@ public class MapaTest {
     public void elJugadorNoPuedeEntrarASalidaSinLlave() {
         player.setPos(new Celda(3, 4));
         assertFalse(player.isWinner());
-        player.tryMove(Direccion.RIGHT);
+        player.tryMove(Direction.RIGHT);
         assertFalse(player.isWinner());
         assertEquals(new Celda(3, 4), player.getPos());
     }
@@ -57,7 +59,7 @@ public class MapaTest {
         player.takeKey();
         mapa.getExit().increaseKeyCount();
         assertFalse(player.isWinner());
-        player.tryMove(Direccion.RIGHT);
+        player.tryMove(Direction.RIGHT);
         assertTrue(player.isWinner());
     }
 
@@ -65,7 +67,7 @@ public class MapaTest {
     public void elJugadorPuedeMoverObstaculos() {
         MovableRock r = (MovableRock) mapa.getEnviroments()[3][3];
         player.setPos(new Celda(3, 2));
-        player.tryMove(Direccion.DOWN);
+        player.tryMove(Direction.DOWN);
         assertEquals(new Celda(3, 4), r.getPos());
         assertEquals(new Celda(3, 3), player.getPos());
     }
@@ -75,7 +77,7 @@ public class MapaTest {
         MovableRock r = (MovableRock) mapa.getEnviroments()[4][5];
         UnmovableEnvironment unmovableEnvironment = (UnmovableEnvironment) mapa.getEnviroments()[5][5];
         player.setPos(new Celda(3, 5));
-        player.tryMove(Direccion.RIGHT);
+        player.tryMove(Direction.RIGHT);
         assertEquals(new Celda(4, 5), r.getPos());
         assertEquals(new Celda(3, 5), player.getPos());
         assertEquals(new Celda(5, 5), unmovableEnvironment.getPos());
@@ -85,7 +87,7 @@ public class MapaTest {
     public void noSePuedeBloquearLaSalida() {
         MovableRock r = (MovableRock) mapa.getEnviroments()[4][5];
         player.setPos(new Celda(4, 6));
-        player.tryMove(Direccion.UP);
+        player.tryMove(Direction.UP);
         assertEquals(new Celda(4, 5), r.getPos());
         assertEquals(new Celda(4, 6), player.getPos());
     }
@@ -93,14 +95,14 @@ public class MapaTest {
     @Test
     public void noSePuedeMoverSobreUnEnemigo() {
         player.setPos(new Celda(5, 2));
-        player.tryMove(Direccion.UP);
+        player.tryMove(Direction.UP);
         assertEquals(new Celda(5, 2), player.getPos());
     }
 
     @Test
     public void recibeDanioAlPisarTrampa() {
         player.setPos(new Celda(5, 2));
-        player.tryMove(Direccion.UP);
+        player.tryMove(Direction.UP);
         assertEquals(2, player.getVidas());
         assertTrue(player.isAlive());
     }
@@ -108,7 +110,7 @@ public class MapaTest {
     @Test
     public void muereAlPisarPozo() {
         player.setPos(new Celda(6, 2));
-        player.tryMove(Direccion.UP);
+        player.tryMove(Direction.UP);
         assertEquals(0, player.getVidas());
         assertFalse(player.isAlive());
     }
@@ -117,7 +119,7 @@ public class MapaTest {
     public void noSePuedeMoverUnEnviromentSobreEnemigo() {
         MovableRock r = (MovableRock) mapa.getEnviroments()[6][4];
         player.setPos(new Celda(5, 4));
-        player.tryMove(Direccion.RIGHT);
+        player.tryMove(Direction.RIGHT);
         assertEquals(new Celda(6, 4), r.getPos());
         assertEquals(new Celda(5, 4), player.getPos());
     }
