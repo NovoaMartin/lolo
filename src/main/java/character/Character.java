@@ -16,9 +16,7 @@ public abstract class Character implements Renderable {
         this.vidas = vidas;
     }
 
-    public void tryMove(int direccion) {
-        this.mapa.tryMove(this, direccion);
-    }
+    public abstract void tryMove(int direccion);
 
     public void setPos(Celda pos) {
         this.pos = pos;

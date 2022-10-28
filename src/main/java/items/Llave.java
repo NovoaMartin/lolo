@@ -22,12 +22,12 @@ public class Llave extends Item {
 
     @Override
     public void interactWith(Character character, int direccion, Mapa mapa) {
-        if (character instanceof Player) {
+        if (character.canWin()) {
             ((Player) character).takeKey();
             this.image.setOpacity(0.3);
             mapa.getExit().increaseKeyCount();
+            this.valid = false;
         }
-        this.valid = false;
     }
 
     @Override

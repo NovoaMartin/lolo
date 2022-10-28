@@ -77,14 +77,14 @@ public class Player extends Character {
         if (alive && !winner) {
             this.orientacion = direccion;
             image.setImage(sprites.get(direccion)[2]);
-            super.tryMove(direccion);
+            mapa.tryMove(this, direccion);
         }
     }
 
     public void morir(String enemigo) {
         super.morir(enemigo);
         if (enemigo.equals("Medusa")) {
-            image.setEffect(new ColorAdjust(0, 0, -0.5, 0));
+            image.setEffect(new ColorAdjust(0, 0, -0.9, 0));
         } else {
             FadeTransition ft = new FadeTransition(Constants.DEAD_ANIMATION_DURATION, image);
             ft.setFromValue(1.0);

@@ -55,29 +55,31 @@ public class Mapa implements Renderable, Updatable {
         this.enviroments = new Enviroment[width][height];
     }
 
+    public void tryMove(Enemigo enemigo, int direccion) {
+        Celda target = enemigo.getPos().translate(direccion);
+        if (getPlayer().getPos().equals(target)) {
+            enemigo.interactWith(getPlayer(), direccion, this);
+            return;
+        }
+        tryMove((Character) enemigo, direccion);
+    }
+
+    public void tryMove(Player player, int direccion){
+        Celda target = player.getPos().translate(direccion);
+        for (Enemigo e : enemigos) {
+            if (e.isAlive() && e.getPos().equals(target) || e.canInteractWith(target)) {
+                e.interactWith(player, direccion, this);
+                return;
+            }
+        }
+        tryMove((Character) player, direccion);
+    }
+
 
     public void tryMove(Character character, int direccion) {
         Celda target = character.getPos().translate(direccion);
         if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height) {
             return;
-        }
-
-        if (character instanceof Player) {
-            Player p = (Player) character;
-            for (Enemigo e : enemigos) {
-                if (e.isAlive() && e.getPos().equals(target) || e.canInteractWith(target)) {
-                    e.interactWith(p, direccion, this);
-                    return;
-                }
-            }
-        } else {
-            Enemigo e = (Enemigo) character;
-            for (Player p : players) {
-                if (p.getPos().equals(target)) {
-                    e.interactWith(p, direccion, this);
-                    return;
-                }
-            }
         }
 
         if (items[target.x][target.y] != null) {
