@@ -3,12 +3,11 @@ package character.Enemigos;
 import Utils.Celda;
 import character.Enemigo;
 import character.Player;
-import graphics.Renderable;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import lolo.Mapa;
 
-public class Medusa extends Enemigo implements Renderable {
+public class Medusa extends Enemigo {
     ImageView image = new ImageView("file:src/main/resources/medusa.png");
 
     public Medusa(Celda pos, Mapa mapa, int vidas) {

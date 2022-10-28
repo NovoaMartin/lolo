@@ -3,7 +3,6 @@ package character;
 import Utils.Celda;
 import Utils.Constants;
 import Utils.Direccion;
-import graphics.Renderable;
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
@@ -19,7 +18,7 @@ import lolo.Mapa;
 
 import java.util.Map;
 
-public class Player extends Character implements Renderable {
+public class Player extends Character {
     private boolean winner = false;
     private boolean key = false;
 
