@@ -3,6 +3,7 @@ package character;
 import Utils.Celda;
 import Utils.Constants;
 import Utils.Direccion;
+import graphics.SpriteMovementTransition;
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
@@ -23,9 +24,6 @@ public class Player extends Character {
     private boolean key = false;
 
     private final ImageView image;
-
-    TranslateTransition animacion;
-
     Shape magicalShot;
 
     private static final Map<Integer, Image[]> sprites = Map.of(
@@ -226,41 +224,22 @@ public class Player extends Character {
     @Override
     public void setPos(Celda pos) {
         moving = true;
-        animacion = new TranslateTransition(Constants.MOVEMENT_ANIMATION_DURATION, image);
-        Transition imageRotation = new Transition() {
-            {
-                setCycleDuration(Constants.MOVEMENT_ANIMATION_DURATION);
-            }
+        SpriteMovementTransition animacion = new SpriteMovementTransition(image, Constants.MOVEMENT_ANIMATION_DURATION, sprites.get(orientacion));
 
-            int i = 0;
-
-            @Override
-            protected void interpolate(double frac) {
-                image.setImage(sprites.get(orientacion)[i++ % 5]);
-            }
-        };
-        imageRotation.setOnFinished(e -> image.setImage(sprites.get(orientacion)[2]));
-
-
-        this.pos = pos;
-        animacion.setOnFinished(e -> moving = false);
+        super.setPos(pos);
+        animacion.setOnFinished(e -> {
+            moving = false;
+            image.setImage(sprites.get(orientacion)[2]);
+        });
         if (orientacion == Direccion.UP) {
             animacion.setByY(-50);
-            animacion.play();
-            image.setTranslateY(2.5 + pos.y * 50);
         } else if (orientacion == Direccion.DOWN) {
             animacion.setByY(50);
-            animacion.play();
-            image.setTranslateY(2.5 + pos.y * 50);
         } else if (orientacion == Direccion.LEFT) {
             animacion.setByX(-50);
-            animacion.play();
-            image.setTranslateX(2.5 + pos.x * 50);
         } else if (orientacion == Direccion.RIGHT) {
             animacion.setByX(50);
-            animacion.play();
-            image.setTranslateX(2.5 + pos.x * 50);
         }
-        imageRotation.play();
+        animacion.play();
     }
 }
