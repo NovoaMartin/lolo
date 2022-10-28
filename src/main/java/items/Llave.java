@@ -13,7 +13,7 @@ public class Llave extends Item {
 
     public Llave(Celda pos) {
         super(pos);
-        image = new ImageView("file:src/main/resources/llave.png");
+        image = new ImageView("file:src/main/resources/corazon.png");
         image.setTranslateY(2.5 + pos.y * 50);
         image.setTranslateX(2.5 + pos.x * 50);
         image.setFitHeight(45);

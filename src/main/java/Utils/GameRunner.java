@@ -4,10 +4,9 @@ import character.Player;
 import javafx.application.Platform;
 import lolo.Mapa;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 public class GameRunner {
     Queue<Integer> acciones = new ArrayDeque<>();
@@ -33,6 +32,23 @@ public class GameRunner {
 
     public void atacar() {
         acciones.add(0);
+    }
+
+    public void loadFromFile(String path) {
+        try {
+            Scanner sc = new Scanner(new File("runners/" + path));
+            while (sc.hasNext()) {
+                String command = sc.next();
+                if (command.equals("ATACAR")) {
+                    this.atacar();
+                } else {
+                    this.move(Direccion.get(command), sc.nextInt());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error al cargar gameRunner");
+            System.exit(3);
+        }
     }
 
     public void start() {

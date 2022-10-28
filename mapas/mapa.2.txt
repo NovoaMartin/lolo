@@ -1,6 +1,6 @@
 16 14
 10 10
-1 19 10
+1 19 13
 1 1 3
 items.Llave 6 5
 enviroment.Rock 2 2
@@ -32,3 +32,6 @@ Trampa 10 9
 Medusa 8 5
 MovingThing 11 1
 Fire 9 1 DOWN
+Fire 1 12 RIGHT
+Fire 14 12 UP
+Fire 13 7 LEFT
