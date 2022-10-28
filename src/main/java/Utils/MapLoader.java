@@ -23,7 +23,8 @@ public class MapLoader {
             int numItems = scanner.nextInt();
             int numEnviroments = scanner.nextInt();
             int numEnemies = scanner.nextInt();
-            map.setPlayer(new Player(new Celda(scanner.nextInt(), scanner.nextInt()), map, scanner.nextInt()));
+            Player mapPlayer = (new Player(new Celda(scanner.nextInt(), scanner.nextInt()), map, scanner.nextInt()));
+            map.setPlayer(mapPlayer);
             for (int i = 0; i < numItems; i++) {
                 addItem(map, scanner.next(), scanner.nextInt(), scanner.nextInt());
             }

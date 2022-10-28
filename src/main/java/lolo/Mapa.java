@@ -64,7 +64,7 @@ public class Mapa implements Renderable, Updatable {
         tryMove((Character) enemigo, direccion);
     }
 
-    public void tryMove(Player player, int direccion){
+    public void tryMove(Player player, int direccion) {
         Celda target = player.getPos().translate(direccion);
         for (Enemigo e : enemigos) {
             if (e.canInteractWith(target)) {
@@ -257,7 +257,7 @@ public class Mapa implements Renderable, Updatable {
 
     public void win() {
         if (nextMap != null) {
-            pantalla.createView(nextMap);
+            nextActiveMap = pantalla.createView(nextMap);
             return;
         }
         this.root.getChildren().clear();
@@ -330,5 +330,11 @@ public class Mapa implements Renderable, Updatable {
 
     public ArrayList<Enemigo> getEnemigos() {
         return this.enemigos;
+    }
+
+    private Mapa nextActiveMap = null;
+
+    public Mapa getNextActiveMap() {
+        return nextActiveMap;
     }
 }

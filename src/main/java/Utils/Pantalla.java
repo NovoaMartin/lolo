@@ -13,7 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Pantalla extends Application {
-    private static final boolean TECLADO = true;
+    private static final boolean TECLADO = false;
 
     public static void main(String[] args) {
         launch();
@@ -37,28 +37,45 @@ public class Pantalla extends Application {
         });
         stage.setOnCloseRequest(e -> System.exit(0));
 
-        if (!TECLADO)
-            new Thread(() -> {
-                try {
-                    int sleepTime = ((int) Constants.MOVEMENT_ANIMATION_DURATION.toMillis() + 50);
-                    mapaActual.getPlayer().tryMove(Direccion.DOWN);
-                    Thread.sleep(sleepTime);
-                    mapaActual.getPlayer().tryMove(Direccion.DOWN);
-                    Thread.sleep(sleepTime);
-                    mapaActual.getPlayer().tryMove(Direccion.DOWN);
-                    Thread.sleep(sleepTime);
-                    mapaActual.getPlayer().tryMove(Direccion.DOWN);
-                } catch (Exception e) {
-                    System.exit(2);
-                }
-            }).start();
+        if (!TECLADO) {
+            GameRunner gameRunner = new GameRunner(mapaActual.getPlayer(), mapaActual);
+            gameRunner.move(Direccion.LEFT, 2);
+            gameRunner.move(Direccion.RIGHT, 4);
+            gameRunner.move(Direccion.DOWN, 4);
+            gameRunner.move(Direccion.RIGHT);
+            gameRunner.atacar();
+            gameRunner.move(Direccion.UP, 4);
+            gameRunner.move(Direccion.RIGHT, 5);
+            gameRunner.move(Direccion.DOWN);
+            gameRunner.move(Direccion.RIGHT, 3);
+            gameRunner.move(Direccion.DOWN, 4);
+            gameRunner.move(Direccion.LEFT);
+            gameRunner.move(Direccion.UP);
+            gameRunner.move(Direccion.LEFT);
+            gameRunner.move(Direccion.UP);
+            gameRunner.move(Direccion.RIGHT);
+            gameRunner.move(Direccion.UP, 2);
+            gameRunner.move(Direccion.LEFT, 2);
+            gameRunner.move(Direccion.DOWN);
+            gameRunner.move(Direccion.RIGHT, 2);
+            gameRunner.move(Direccion.LEFT, 2);
+            gameRunner.move(Direccion.UP);
+            gameRunner.move(Direccion.LEFT);
+            gameRunner.move(Direccion.UP);
+            gameRunner.move(Direccion.LEFT, 2);
+            gameRunner.move(Direccion.DOWN, 9);
+            gameRunner.move(Direccion.RIGHT, 7);
+            gameRunner.start();
+        }
+
+
     }
 
 
     Timer updateTimer;
 
     private void createUpdateTimer(Mapa m) {
-        if(updateTimer != null)
+        if (updateTimer != null)
             updateTimer.cancel();
         updateTimer = new Timer();
         updateTimer.schedule(new TimerTask() {
