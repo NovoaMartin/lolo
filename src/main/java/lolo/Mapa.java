@@ -92,16 +92,43 @@ public class Mapa implements Renderable, Updatable {
         }
     }
 
+    public boolean canMove(Celda target, int direccion) {
+        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height) {
+            return false;
+        }
+        for (Enemigo e : enemigos) {
+            if (e.getPos().equals(target)) {
+                return false;
+            }
+        }
+        if (items[target.x][target.y] != null) {
+            return false;
+        } else if (enviroments[target.x][target.y] != null) {
+            return enviroments[target.x][target.y].canMove(direccion, this);
+        }
+        return true;
+    }
+
     public boolean tryMove(Enviroment enviroment, int direccion) {
         Celda from = enviroment.getPos();
         Celda target = enviroment.getPos().translate(direccion);
-        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height ||
-                players.stream().anyMatch(c -> c.getPos().equals(target))) {
+        if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height) {
             return false;
         }
         Optional<Enemigo> enemigo = enemigos.stream().filter(e -> e.getPos().equals(target)).findFirst();
-        if (enemigo.isPresent() && enemigo.get().isAlive())
-            return false;
+        if (enemigo.isPresent() && enemigo.get().isAlive()) return false;
+        if (getPlayer().getPos().equals(target)) {
+            if (canMove(target.translate(direccion), direccion)) {
+                getPlayer().tryMove(direccion);
+                enviroment.setPos(target);
+                enviroments[from.x][from.y] = null;
+                enviroments[target.x][target.y] = enviroment;
+                return true;
+            } else {
+                getPlayer().recibirDanio("Aplastado");
+                return false;
+            }
+        }
 
         if (items[target.x][target.y] == null && enviroments[target.x][target.y] == null) {
             enviroment.setPos(target);

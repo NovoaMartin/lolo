@@ -240,10 +240,10 @@ public class Player extends Character {
             }
         };
         imageRotation.setOnFinished(e -> image.setImage(sprites.get(orientacion)[2]));
-        animacion.setOnFinished(e -> {
-            moving = false;
-            this.pos = pos;
-        });
+
+
+        this.pos = pos;
+        animacion.setOnFinished(e -> moving = false);
         if (orientacion == Direccion.UP) {
             animacion.setByY(-50);
             animacion.play();

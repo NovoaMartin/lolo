@@ -35,7 +35,7 @@ public class Exit extends Enviroment {
         }
     }
 
-    public void increaseKeyCount(){
+    public void increaseKeyCount() {
         keyCount++;
         if (keyCount == 1) {
             image.setImage(open);

@@ -39,23 +39,25 @@ public class MovingThing extends Enemigo {
         return image;
     }
 
-    private boolean moving = false;
-
     @Override
     public void update() {
         if (!isAlive()) return;
-        moving = true;
+        direccion = mapa.canMove(pos.translate(direccion), direccion) ? direccion : Direccion.reverse(direccion);
         tryMove(direccion);
     }
 
     @Override
     public void setPos(Celda pos) {
-        if (!moving)
-            moving = true;
         super.setPos(pos);
         TranslateTransition tt = new TranslateTransition(Constants.MOVEMENT_ANIMATION_DURATION, image);
-        tt.setByY(50);
-        tt.setOnFinished(e -> moving = false);
+        if (direccion == Direccion.RIGHT)
+            tt.setByX(50);
+        else if (direccion == Direccion.LEFT)
+            tt.setByX(-50);
+        else if (direccion == Direccion.UP)
+            tt.setByY(-50);
+        else if (direccion == Direccion.DOWN)
+            tt.setByY(50);
         tt.play();
     }
 
