@@ -15,7 +15,7 @@ public class MovableRockTest {
 
     @Before
     public void setUp() {
-        m = new Mapa("mapa.test.txt", new Pantalla());
+        m = new Mapa("mapa.test.txt", new Pantalla(), 10, 10);
         rock = new MovableRock(new Celda(3, 3));
     }
 

@@ -16,7 +16,7 @@ public class TrampaTest {
 
     @Before
     public void setUp() {
-        m = new Mapa("mapa.test.txt", new Pantalla());
+        m = new Mapa("mapa.test.txt", new Pantalla(), 10, 10);
         p = m.getPlayer();
         t = new Trampa(new Celda(1, 1), m, 3);
     }

@@ -43,6 +43,7 @@ public class MovingThing extends Enemigo {
 
     @Override
     public void update() {
+        if (!isAlive()) return;
         moving = true;
         tryMove(direccion);
     }

@@ -16,7 +16,7 @@ public class MapaTest {
 
     @Before
     public void setUp() {
-        mapa = new Mapa("mapa.test.txt", new Pantalla());
+        mapa = new Mapa("mapa.test.txt", new Pantalla(), 10, 10);
         player = mapa.getPlayer();
     }
 

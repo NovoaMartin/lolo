@@ -18,4 +18,8 @@ public abstract class Item implements Renderable {
     public boolean isValid() {
         return valid;
     }
+
+    public Celda getPos() {
+        return pos;
+    }
 }

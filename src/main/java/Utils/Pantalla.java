@@ -71,19 +71,15 @@ public class Pantalla extends Application {
 
     public Mapa createView(String mapFile) {
         BorderPane pane = new BorderPane();
-        Mapa m = new Mapa(mapFile, this);
+        Mapa m = MapLoader.loadFromFile(mapFile, this);
         pane.setCenter(m.getRender());
-
         m.setEventListeners(pane);
-
         Scene sc = new Scene(pane);
         sc.setFill(Color.FLORALWHITE);
         stage.setScene(sc);
         stage.setTitle("Pantalla");
         pane.requestFocus();
-
         createUpdateTimer(m);
-
         stage.show();
         return m;
     }

@@ -15,7 +15,7 @@ public class UnmovableEnvironmentTest {
 
     @Before
     public void setUp() {
-        m = new Mapa("mapa.test.txt", new Pantalla());
+        m = new Mapa("mapa.test.txt", new Pantalla(), 10, 10);
         unmovableEnvironment = new UnmovableEnvironment(new Celda(1, 1), Direccion.DOWN);
     }
 
