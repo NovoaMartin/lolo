@@ -2,6 +2,7 @@ package enviroment;
 
 import Utils.Celda;
 import character.Character;
+import character.Enemigo;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,9 +17,11 @@ public class Exit extends Enviroment {
     private int keyCount = 0;
 
     private boolean isOpen = false;
+    private final Mapa map;
 
-    public Exit(Celda pos) {
+    public Exit(Celda pos, Mapa map) {
         super(pos);
+        this.map = map;
         image = new ImageView();
         image.setImage(closed);
         image.setTranslateY(pos.y * 50);
@@ -39,6 +42,9 @@ public class Exit extends Enviroment {
         keyCount++;
         if (keyCount == 1) {
             image.setImage(open);
+            for(Enemigo e : map.getEnemigos()) {
+                e.awaken();
+            }
             isOpen = true;
         }
     }

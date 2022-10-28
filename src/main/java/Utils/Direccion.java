@@ -22,4 +22,19 @@ public class Direccion {
     public static int reverse(int direccion) {
         return -direccion;
     }
+
+    public static int get(String direccion) {
+        switch (direccion) {
+            case "UP":
+                return UP;
+            case "DOWN":
+                return DOWN;
+            case "LEFT":
+                return LEFT;
+            case "RIGHT":
+                return RIGHT;
+            default:
+                return 0;
+        }
+    }
 }

@@ -31,6 +31,11 @@ public class Pozo extends Enemigo {
     }
 
     @Override
+    public boolean canInteractWith(Celda p) {
+        return p.equals(pos);
+    }
+
+    @Override
     public Node getRender() {
         return image;
     }

@@ -29,6 +29,10 @@ public abstract class Enemigo extends Character implements Updatable {
         return false;
     }
 
+    public void awaken() {
+
+    }
+
     public void update() {
     }
 }

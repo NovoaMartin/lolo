@@ -1,9 +1,6 @@
 package Utils;
 
-import character.Enemigos.Medusa;
-import character.Enemigos.MovingThing;
-import character.Enemigos.Pozo;
-import character.Enemigos.Trampa;
+import character.Enemigos.*;
 import character.Player;
 import enviroment.Exit;
 import enviroment.MovableRock;
@@ -22,7 +19,7 @@ public class MapLoader {
             int width = scanner.nextInt();
             int height = scanner.nextInt();
             Mapa map = new Mapa(path, p, width, height);
-            Exit exit = new Exit(new Celda(scanner.nextInt(), scanner.nextInt()));
+            Exit exit = new Exit(new Celda(scanner.nextInt(), scanner.nextInt()), map);
             int numItems = scanner.nextInt();
             int numEnviroments = scanner.nextInt();
             int numEnemies = scanner.nextInt();
@@ -34,7 +31,7 @@ public class MapLoader {
                 addEnvironment(map, scanner.next(), scanner.nextInt(), scanner.nextInt());
             }
             for (int i = 0; i < numEnemies; i++) {
-                addEnemigo(map, scanner.next(), scanner.nextInt(), scanner.nextInt());
+                addEnemigo(map, scanner.next(), scanner.nextInt(), scanner.nextInt(), scanner);
             }
             map.setExit(exit);
             map.addWalls();
@@ -61,13 +58,10 @@ public class MapLoader {
             case "enviroment.MovableRock":
                 map.addEnvironment(new MovableRock(new Celda(x, y)));
                 break;
-            case "Exit":
-                map.setExit(new Exit(new Celda(x, y)));
-                break;
         }
     }
 
-    public static void addEnemigo(Mapa map, String type, int x, int y) {
+    public static void addEnemigo(Mapa map, String type, int x, int y, Scanner sc) {
         switch (type) {
             case "Pozo":
                 map.addEnemigo(new Pozo(new Celda(x, y), map, 1));
@@ -80,6 +74,9 @@ public class MapLoader {
                 break;
             case "MovingThing":
                 map.addEnemigo(new MovingThing(new Celda(x, y), map, 1));
+                break;
+            case "Fire":
+                map.addEnemigo(new FireThing(new Celda(x, y), map, 1, Direccion.get(sc.next())));
                 break;
         }
     }

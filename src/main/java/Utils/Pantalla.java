@@ -66,7 +66,7 @@ public class Pantalla extends Application {
             public void run() {
                 m.update();
             }
-        }, 0, 1000);
+        }, 0, 1);
     }
 
     public Mapa createView(String mapFile) {

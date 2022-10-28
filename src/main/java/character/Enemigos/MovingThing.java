@@ -39,9 +39,13 @@ public class MovingThing extends Enemigo {
         return image;
     }
 
+    int tickCount = 0;
+
     @Override
     public void update() {
         if (!isAlive()) return;
+        tickCount = (tickCount + 1) % 1000;
+        if (tickCount != 0) return;
         direccion = mapa.canMove(pos.translate(direccion), direccion) ? direccion : Direccion.reverse(direccion);
         tryMove(direccion);
     }
@@ -59,6 +63,11 @@ public class MovingThing extends Enemigo {
         else if (direccion == Direccion.DOWN)
             tt.setByY(50);
         tt.play();
+    }
+
+    @Override
+    public boolean canInteractWith(Celda p) {
+        return alive && p.equals(pos);
     }
 
     @Override

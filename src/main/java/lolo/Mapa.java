@@ -67,7 +67,7 @@ public class Mapa implements Renderable, Updatable {
     public void tryMove(Player player, int direccion){
         Celda target = player.getPos().translate(direccion);
         for (Enemigo e : enemigos) {
-            if (e.isAlive() && e.getPos().equals(target) || e.canInteractWith(target)) {
+            if (e.canInteractWith(target)) {
                 e.interactWith(player, direccion, this);
                 return;
             }
@@ -297,5 +297,38 @@ public class Mapa implements Renderable, Updatable {
 
     public void setNextMap(String nextMap) {
         this.nextMap = nextMap;
+    }
+
+    public Celda findNextOccupiedSpace(Celda pos, int orientacion) {
+        if (orientacion == Direccion.UP) {
+            for (int i = pos.y - 1; i >= 0; i--) {
+                if (this.items[pos.x][i] != null || this.enviroments[pos.x][i] != null) {
+                    return new Celda(pos.x, i);
+                }
+            }
+        } else if (orientacion == Direccion.DOWN) {
+            for (int i = pos.y + 1; i < this.height; i++) {
+                if (this.items[pos.x][i] != null || this.enviroments[pos.x][i] != null) {
+                    return new Celda(pos.x, i);
+                }
+            }
+        } else if (orientacion == Direccion.LEFT) {
+            for (int i = pos.x - 1; i >= 0; i--) {
+                if (this.items[i][pos.y] != null || this.enviroments[i][pos.y] != null) {
+                    return new Celda(i, pos.y);
+                }
+            }
+        } else {
+            for (int i = pos.x + 1; i < this.width; i++) {
+                if (this.items[i][pos.y] != null || this.enviroments[i][pos.y] != null) {
+                    return new Celda(i, pos.y);
+                }
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Enemigo> getEnemigos() {
+        return this.enemigos;
     }
 }
