@@ -2,6 +2,7 @@ package character;
 
 import java.util.Map;
 
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -178,44 +179,46 @@ public class Player extends Character {
 
     private int orientacion = Direction.DOWN;
 
-//    @Override
-//    public void setPos(Celda pos) {
-//        moving = true;
-//        animacion = new TranslateTransition(Constants.MOVEMENT_ANIMATION_DURATION, image);
-//        Transition imageRotation = new Transition() {
-//            {
-//                setCycleDuration(Constants.MOVEMENT_ANIMATION_DURATION);
-//            }
-//
-//            int i = 0;
-//
-//            @Override
-//            protected void interpolate(double frac) {
+    @Override
+    public void setPos(Celda pos) {
+        moving = true;
+        animacion = new TranslateTransition(Constants.MOVEMENT_ANIMATION_DURATION, image);
+        Transition imageRotation = new Transition() {
+            {
+                setCycleDuration(Constants.MOVEMENT_ANIMATION_DURATION);
+            }
+
+            int i = 0;
+
+            @Override
+            protected void interpolate(double frac) {
 //                image.setImage(sprites.get(orientacion)[i++ % 5]);
-//            }
-//        };
-//        imageRotation.setOnFinished(e -> image.setImage(sprites.get(orientacion)[2]));
-//        animacion.setOnFinished(e -> {
-//            moving = false;
-//            this.pos = pos;
-//        });
-//        if (orientacion == Direccion.UP) {
-//            animacion.setByY(-50);
-//            animacion.play();
-//            image.setTranslateY(2.5 + pos.y * 50);
-//        } else if (orientacion == Direccion.DOWN) {
-//            animacion.setByY(50);
-//            animacion.play();
-//            image.setTranslateY(2.5 + pos.y * 50);
-//        } else if (orientacion == Direccion.LEFT) {
-//            animacion.setByX(-50);
-//            animacion.play();
-//            image.setTranslateX(2.5 + pos.x * 50);
-//        } else if (orientacion == Direccion.RIGHT) {
-//            animacion.setByX(50);
-//            animacion.play();
-//            image.setTranslateX(2.5 + pos.x * 50);
-//        }
-//        imageRotation.play();
-//    }
+            }
+        };
+        imageRotation.setOnFinished(e -> image.setImage(image.getImage()));
+        animacion.setOnFinished(e -> {
+            moving = false;
+            this.x = pos.x;
+            this.y = pos.y;
+        });
+        if (orientacion == Direction.UP) {
+            animacion.setByY(-50);
+            animacion.play();
+            image.setTranslateY(2.5 + pos.y * 50);
+        } else if (orientacion == Direction.DOWN) {
+            animacion.setByY(Constants.imageSize * 5);
+            animacion.play();
+            this.x--;
+            image.setY(x * Constants.imageSize * 5 );
+        } else if (orientacion == Direction.LEFT) {
+            animacion.setByX(-50);
+            animacion.play();
+            image.setTranslateX(2.5 + pos.x * 50);
+        } else if (orientacion == Direction.RIGHT) {
+            animacion.setByX(50);
+            animacion.play();
+            image.setTranslateX(2.5 + pos.x * 50);
+        }
+        imageRotation.play();
+    }
 }

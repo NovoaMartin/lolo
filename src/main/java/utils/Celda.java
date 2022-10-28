@@ -3,14 +3,13 @@ package utils;
 import java.util.Objects;
 
 import graphics.Renderable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
 public class Celda implements Renderable, Interactable, Movable{
 	
-    public final int x;
-    public final int y;
+    public int x;
+    public int y;
     
     protected ImageView image;
     
@@ -63,6 +62,11 @@ public class Celda implements Renderable, Interactable, Movable{
 	}
 
 	@Override
+	public boolean canInteract() {
+		return false;
+	}
+	
+	@Override
 	public void tryMove(Celda pos, int dir) {
 		// TODO Auto-generated method stub
 		
@@ -73,5 +77,6 @@ public class Celda implements Renderable, Interactable, Movable{
 		// TODO Auto-generated method stub
 		
 	}
+
 	
 }

@@ -56,14 +56,14 @@ public class Pantalla extends Application {
     	
         BorderPane pane = new BorderPane();
         Mapa m = FileMap.loadMap(originalMap);
-        m.setEventListeners(pane);
         pane.setCenter(m.getRender());
-
+        pane.requestFocus();
+        
         Scene sc = new Scene(pane);
+        m.setEventListeners(stage);
         stage.setScene(sc);
         stage.setTitle("Pantalla");
         stage.show();
-        stage.requestFocus();
 
         return m;
     }

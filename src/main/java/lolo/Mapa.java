@@ -19,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import utils.Celda;
 import utils.Constants;
 import utils.Direction;
@@ -37,14 +38,14 @@ public class Mapa implements Renderable {
 		players = new ArrayList<Player>();
 	}
 
-	public void tryMove(Celda pos, int direccion) {
+	public void tryMove(Player pos, int direccion) {
 		Celda target = pos.translate(direccion);
 		if (target.x < 0 || target.x >= map.length || target.y < 0 || target.y >= map.length) {
 			return;
-		} else if (map[target.x][target.y] != null) {
+		} else if (map[target.x][target.y].canInteract() ) {
 			pos.interactWith(target);
 		} else {
-			map[target.x][target.y].setPos(target);
+			pos.setPos(target);
 		}
 	}
 
@@ -227,16 +228,14 @@ public class Mapa implements Renderable {
 		return root;
 	}
 
-	public void setEventListeners(Node node) {
+	public void setEventListeners(Stage node) {
 		Player p1 = players.get(0);
-		node.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-			if (event.getCode() == KeyCode.ESCAPE) {
+		node.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+			if (e.getCode() == KeyCode.ESCAPE) {
 				System.exit(0);
-			} else if (event.getCode() == KeyCode.R) {
+			} else if (e.getCode() == KeyCode.R) {
 				pantalla.createView();
 			}
-		});
-		node.setOnKeyPressed(e -> {
 			switch (e.getCode()) {
 			case W: {
 				if (!p1.isMoving()) {
