@@ -3,6 +3,7 @@ package utils;
 import java.util.Objects;
 
 import graphics.Renderable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
@@ -16,6 +17,7 @@ public class Celda implements Renderable, Interactable, Movable{
     public Celda(int x, int y) {
         this.x = x;
         this.y = y;
+        
     }
 
     public Celda translate(int direccion) {

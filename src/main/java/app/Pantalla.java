@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lolo.Mapa;
 import utils.Constants;
@@ -54,20 +53,18 @@ public class Pantalla extends Application {
     }
 
     public Mapa createView() {
+    	
         BorderPane pane = new BorderPane();
         Mapa m = FileMap.loadMap(originalMap);
-        System.out.println(m);
+        m.setEventListeners(pane);
         pane.setCenter(m.getRender());
 
-        m.setEventListeners(pane);
-
         Scene sc = new Scene(pane);
-        sc.setFill(Color.FLORALWHITE);
         stage.setScene(sc);
         stage.setTitle("Pantalla");
-        pane.requestFocus();
-
         stage.show();
+        stage.requestFocus();
+
         return m;
     }
 

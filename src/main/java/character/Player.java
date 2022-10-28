@@ -2,14 +2,10 @@ package character;
 
 import java.util.Map;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -23,7 +19,6 @@ public class Player extends Character {
 	private boolean winner = false;
     private boolean key = false;
 
-    private final ImageView image;
     private TranslateTransition animacion;
     private Shape magicalShot;
 
@@ -58,13 +53,8 @@ public class Player extends Character {
             }
     );
 
-    public Player(int x, int y, int vidas) {
-    	super(x, y, vidas);
-        image = new ImageView("file:src/main/resources/lolo.png");
-        image.setFitWidth(45);
-        image.setFitHeight(45);
-        image.setTranslateX(x * 50 + 2.5);
-        image.setTranslateY(y * 50 + 2.5);
+    public Player(int x, int y, int vidas, int from, int to) {
+    	super(x, y, vidas, from, to, "lolo");
         magicalShot = new Rectangle(0, 0, 5, 5);
         magicalShot.setFill(Color.BLUE);
         magicalShot.setVisible(false);

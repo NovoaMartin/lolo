@@ -1,9 +1,9 @@
 package enviroment;
 
-import javafx.scene.Node;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import utils.Celda;
+import utils.Constants;
 
 public class Door extends Enviroment{
 
@@ -11,14 +11,9 @@ public class Door extends Enviroment{
 	private boolean isOpen = false;
 	private static final Image open = new Image("file:src/main/resources/door_open.png");
 	
-	public Door(int x, int y, int dir) {
-		super(x, y);
-        image = new ImageView("file:src/main/resources/door.png");
+	public Door(int x, int y, int dir, int from, int to) {
+		super(x, y, from, to);
         image.setRotate(90 * dir);
-        image.setFitWidth(50);
-        image.setFitHeight(50);
-        image.setTranslateX(x * 50);
-        image.setTranslateY(y * 50);
 	}
 	
     @Override
@@ -32,14 +27,9 @@ public class Door extends Enviroment{
     public void increaseKeyCount(){
         keyCount++;
         if (keyCount == 1) {
-            image.setImage(open);
+            image.setViewport(new Rectangle2D(80, 64, Constants.imageSize, Constants.imageSize));
             isOpen = true;
         }
     }
-
-	@Override
-	public Node getRender() {
-		return null;
-	}
 
 }

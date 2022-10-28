@@ -1,9 +1,6 @@
 package enviroment;
 
 import javafx.animation.TranslateTransition;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import utils.Celda;
 import utils.Constants;
@@ -14,10 +11,10 @@ public class MovableRock extends Enviroment{
 
     public MovableRock(int x, int y) {
         super(x, y);
-        image = new Rectangle(50, 50);
-        image.setTranslateX(2.5 + x * 50);
-        image.setTranslateY(2.5 + y * 50);
-        image.setFill(Color.DARKGREEN);
+//        image = new Rectangle(50, 50);
+//        image.setTranslateX(2.5 + x * 50);
+//        image.setTranslateY(2.5 + y * 50);
+//        image.setFill(Color.DARKGREEN);
     }
 
     private int orientacion = Direction.RIGHT;
@@ -35,11 +32,6 @@ public class MovableRock extends Enviroment{
 //            character.setPos(inicial);
 //        }
 //    }
-
-    @Override
-    public Node getRender() {
-        return image;
-    }
 
 	@Override
 	public void setPos(Celda pos) {
