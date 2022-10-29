@@ -13,8 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class LlaveTest {
     @Test
     public void testInteractWith() throws InterruptedException {
-        new Thread(Pantalla::startGame).start();
-        Thread.sleep(500);
+        Util.initialize();
         Mapa m = MapLoader.loadFromFile("mapa.test.txt", new Pantalla());
         Llave l = new Llave(new Celda(1, 1));
         Player p = new Player(new Celda(2, 1), m, 3);
