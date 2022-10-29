@@ -1,7 +1,9 @@
 package utils;
 
+import character.Player;
+
 public interface Interactable {
 
-	void interactWith(Celda target);
+	void interactWith(Player p);
 	boolean canInteract();
 }

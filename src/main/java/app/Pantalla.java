@@ -2,7 +2,6 @@ package app;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -29,9 +28,15 @@ public class Pantalla extends Application {
         this.stage = stage;
         Mapa m = createView();
         stage.addEventHandler(KeyEvent.KEY_PRESSED, e->{
-            if(e.getCode()== KeyCode.T){
-                createView();
-            }
+        	switch (e.getCode()) {
+        	case R:{
+        		createView();
+        		break;
+        	}
+        	case ESCAPE: {
+        		System.exit(0);
+        	}
+        	}
         });
 
         if (!TECLADO)
@@ -63,8 +68,9 @@ public class Pantalla extends Application {
         m.setEventListeners(stage);
         stage.setScene(sc);
         stage.setTitle("Pantalla");
+        stage.setResizable(false);
+        stage.centerOnScreen();
         stage.show();
-
         return m;
     }
 

@@ -1,51 +1,66 @@
 package lolo;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import app.Pantalla;
-import character.Muse;
 import character.Player;
+import character.Snakey;
 import enviroment.Door;
 import enviroment.Enviroment;
-import graphics.Renderable;
 import items.Key;
 import javafx.scene.Node;
-import javafx.scene.input.KeyCode;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import utils.Celda;
 import utils.Constants;
 import utils.Direction;
+import utils.Renderable;
 
 public class Mapa implements Renderable {
 
 	private Celda[][] map;
-
-	private String nextMap;
-	private Pantalla pantalla;
-
 	private ArrayList<Player> players;
+	private BorderPane root;
+	private Celda door;
+	private int keys = 0;
 
 	public Mapa(Celda[][] map) {
 		this.map = map;
 		players = new ArrayList<Player>();
 	}
 
-	public void tryMove(Player pos, int direccion) {
-		Celda target = pos.translate(direccion);
-		if (target.x < 0 || target.x >= map.length || target.y < 0 || target.y >= map.length) {
+	public void tryMove(Player p, int direccion) {
+		Celda target = p.translate(direccion);
+		if (map[target.i][target.j] != null && map[target.i][target.j] == door && map[target.i][target.j].canInteract()) {
+			door.interactWith(p);
+			showText("Ganaste");
+		} else if (target.j < 1 || target.j >= map.length - 1 || target.i < 1 || target.i >= map.length - 1) {
 			return;
-		} else if (map[target.x][target.y].canInteract() ) {
-			pos.interactWith(target);
+		} else if (map[target.i][target.j] != null && map[target.i][target.j].canInteract()) {
+			map[target.i][target.j].interactWith(p);
+			if (!p.isAlive()) {
+				showText("Perdiste");
+			} else if (!map[target.i][target.j].isValid()) {
+				map[target.i][target.j].visible(false);
+				map[target.i][target.j] = null;
+			}
+			if (p.Keys() == keys) {
+				((Door) door).open();
+			}
 		} else {
-			pos.setPos(target);
+			p.tryMove(target, direccion);
 		}
 	}
 
@@ -53,106 +68,14 @@ public class Mapa implements Renderable {
 		return players.get(0);
 	}
 
-//		if (character instanceof Player) {
-//			Player p = (Player) character;
-//			for (Enemigo e : enemigos) {
-//				if (e.isAlive() && e.getPos().equals(target) || e.canInteractWith(target)) {
-//					e.interactWith(p, direccion, this);
-//					return;
-//				}
-//			}
-//		}
-//
-//		if (items[target.x][target.y] != null) {
-//			items[target.x][target.y].interactWith(character, direccion, this);
-//			if (!items[target.x][target.y].isValid()) {
-//				items[target.x][target.y] = null;
-//			}
-//		} else if (enviroments[target.x][target.y] != null) {
-//			enviroments[target.x][target.y].interactWith(character, direccion, this);
-//		} else {
-//			character.setPos(target);
-//		}
-//	}
-
-	public boolean tryMove(Enviroment enviroment, int direccion) {
-//		Celda from = enviroment.getPos();
-//		Celda target = enviroment.getPos().translate(direccion);
-//		if (target.x < 0 || target.x >= width || target.y < 0 || target.y >= height
-//				|| players.stream().anyMatch(c -> c.getPos().equals(target))) {
-//			return false;
-//		}
-//		Optional<Enemigo> enemigo = enemigos.stream().filter(e -> e.getPos().equals(target)).findFirst();
-//		if (enemigo.isPresent() && enemigo.get().isAlive())
-//			return false;
-//
-//		if (items[target.x][target.y] == null && enviroments[target.x][target.y] == null) {
-//			enviroment.setPos(target);
-//			enviroments[from.x][from.y] = null;
-//			enviroments[target.x][target.y] = enviroment;
-//			return true;
-//		}
-		return false;
-	}
-
-	private void loadFromFile(String mapName) throws FileNotFoundException {
-//		Scanner scanner = new Scanner(new File("mapas/" + mapName));
-//		this.width = scanner.nextInt();
-//		this.height = scanner.nextInt();
-//		this.items = new Item[this.width][this.height];
-//		this.enviroments = new Enviroment[this.width][this.height];
-//		addEnvironment("Exit", scanner.nextInt(), scanner.nextInt());
-//
-//		int numItems = scanner.nextInt();
-//		int numEnviroments = scanner.nextInt();
-//		int numEnemigos = scanner.nextInt();
-//
-//		this.players.add(new Player(new Celda(scanner.nextInt(), scanner.nextInt()), this, scanner.nextInt()));
-//
-//		for (int i = 0; i < numItems; i++) {
-//			String type = scanner.next();
-//			int x = scanner.nextInt();
-//			int y = scanner.nextInt();
-//			addItem(type, x, y);
-//		}
-//		for (int i = 0; i < numEnviroments; i++) {
-//			String type = scanner.next();
-//			int x = scanner.nextInt();
-//			int y = scanner.nextInt();
-//			addEnvironment(type, x, y);
-//		}
-//		for (int i = 0; i < numEnemigos; i++) {
-//			String type = scanner.next();
-//			int x = scanner.nextInt();
-//			int y = scanner.nextInt();
-//			addEnemigo(type, x, y);
-//		}
-//
-//		for (int i = 0; i < this.width; i++) {
-//			this.enviroments[i][0] = new UnmovableEnvironment(new Celda(i, 0), Direccion.DOWN);
-//			this.enviroments[i][this.height - 1] = new UnmovableEnvironment(new Celda(i, this.height - 1),
-//					Direccion.UP);
-//		}
-//		for (int i = 0; i < this.height; i++) {
-//			this.enviroments[0][i] = new UnmovableEnvironment(new Celda(0, i), Direccion.RIGHT);
-//			this.enviroments[this.width - 1][i] = new UnmovableEnvironment(new Celda(this.width - 1, i),
-//					Direccion.LEFT);
-//		}
-//
-//		if (scanner.hasNext()) {
-//			this.nextMap = scanner.next();
-//		}
-//		scanner.close();
-	}
-
 	public void addElement(char ch, int i, int j) {
 		switch (ch) {
 		case '#': {
 			if (i == 0) {
 				map[i][j] = new Enviroment(i, j, 80, 0);
-			} else if (i == map.length-1) {
+			} else if (i == map.length - 1) {
 				map[i][j] = new Enviroment(i, j, 80, 48);
-			} else if (j == map.length-1) {
+			} else if (j == map.length - 1) {
 				map[i][j] = new Enviroment(i, j, 112, 32);
 			} else {
 				map[i][j] = new Enviroment(i, j, 64, 16);
@@ -162,9 +85,9 @@ public class Mapa implements Renderable {
 		case '*': {
 			if (i == 0 && j == 0) {
 				map[i][j] = new Enviroment(i, j, 64, 0);
-			} else if (i == 0 && j == map.length-1) {
+			} else if (i == 0 && j == map.length - 1) {
 				map[i][j] = new Enviroment(i, j, 112, 0);
-			} else if (i == map.length-1 && j == 0) {
+			} else if (i == map.length - 1 && j == 0) {
 				map[i][j] = new Enviroment(i, j, 64, 48);
 			} else {
 				map[i][j] = new Enviroment(i, j, 112, 48);
@@ -177,24 +100,26 @@ public class Mapa implements Renderable {
 			map[i][j] = p;
 			break;
 		}
-		case 'M': {
-			map[i][j] = new Muse(i, j, 0, 96);
+		case 'S': {
+			map[i][j] = new Snakey(i, j, 0, 96);
 			break;
 		}
 		case 'K': {
 			map[i][j] = new Key(i, j, 16, 48);
+			keys++;
 			break;
 		}
 		case 'D': {
 			if (i == 0) {
-				map[i][j] = new Door(i, j, 1, 64, 64);
-			} else if (i == map.length-1) {
-				map[i][j] = new Door(i, j, 1, 64, 64);
-			} else if (j == map.length-1) {
+				map[i][j] = new Door(i, j, 0, 64, 64);
+			} else if (i == map.length - 1) {
+				map[i][j] = new Door(i, j, 2, 64, 64);
+			} else if (j == map.length - 1) {
 				map[i][j] = new Door(i, j, 1, 64, 64);
 			} else {
-				map[i][j] = new Door(i, j, 1, 64, 64);
+				map[i][j] = new Door(i, j, 3, 64, 64);
 			}
+			door = map[i][j];
 			break;
 		}
 		case 'T': {
@@ -202,40 +127,39 @@ public class Mapa implements Renderable {
 			break;
 		}
 		case ' ': {
-			map[i][j] = new Enviroment(i, j, 15, 0);
+//			map[i][j] = new Enviroment(i, j, 15, 0);
 			break;
 		}
 		}
 	}
 
-	BorderPane root = new BorderPane();
+	public void removeElement(Celda target) {
+		if (map[target.i][target.j].isValid()) {
+			map[target.i][target.j].visible(false);
+			map[target.i][target.j] = null;
+		}
+	}
 
 	public Node getRender() {
-
+		root = new BorderPane();
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				root.getChildren().add(map[i][j].getRender());
+				if (map[i][j] != null)
+					root.getChildren().add(map[i][j].getRender());
 			}
 		}
-
-		root.setPrefHeight(map.length * Constants.imageSize * 5);
-		root.setPrefWidth(map.length * Constants.imageSize * 5);
-
-//		BackgroundImage floor = new BackgroundImage(new Image("file:src/main/resources/floor.png"),
-//				BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-//
-//		root.setBackground(new Background(floor));
+		root.setPrefHeight(map.length * Constants.IMAGE_SIZE);
+		root.setPrefWidth(map.length * Constants.IMAGE_SIZE);
+		BackgroundImage floor = new BackgroundImage(
+				new Image("file:src/main/resources/floor.png", Constants.IMAGE_SIZE, Constants.IMAGE_SIZE, true, false),
+				BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		root.setBackground(new Background(floor));
 		return root;
 	}
 
 	public void setEventListeners(Stage node) {
 		Player p1 = players.get(0);
 		node.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
-			if (e.getCode() == KeyCode.ESCAPE) {
-				System.exit(0);
-			} else if (e.getCode() == KeyCode.R) {
-				pantalla.createView();
-			}
 			switch (e.getCode()) {
 			case W: {
 				if (!p1.isMoving()) {
@@ -245,25 +169,27 @@ public class Mapa implements Renderable {
 			}
 			case S: {
 				if (!p1.isMoving()) {
-					tryMove(p1, Direction.UP);
+					tryMove(p1, Direction.DOWN);
 					break;
 				}
 			}
 			case A: {
 				if (!p1.isMoving()) {
-					tryMove(p1, Direction.UP);
+					tryMove(p1, Direction.LEFT);
 					break;
 				}
 			}
 			case D: {
 				if (!p1.isMoving()) {
-					tryMove(p1, Direction.UP);
+					tryMove(p1, Direction.RIGHT);
 					break;
 				}
 			}
 			case SPACE: {
 				if (!p1.isMoving()) {
-					p1.atacar(this);
+					Celda target = getAttackTarget(p1.i, p1.j, p1.facingDir());
+					p1.atacar(target);
+					map[target.i][target.j] = null;
 					break;
 				}
 			}
@@ -273,71 +199,55 @@ public class Mapa implements Renderable {
 		});
 	}
 
-	public Celda getAttackTarget(Celda from, int orientacion) {
-		Celda target = null;
-		if (orientacion == Direction.UP) {
-			for (int i = from.y; i > 0; i--) {
-				if (map[i][from.x] != null) {
-					target = map[i][from.x];
-				}
-			}
-		} else if (orientacion == Direction.DOWN) {
-			for (int i = from.y; i > 0; i++) {
-				if (map[i][from.x] != null) {
-					target = map[i][from.x];
-				}
-			}
-		} else if (orientacion == Direction.LEFT) {
-			for (int i = from.y; i > 0; i--) {
-				if (map[from.y][i] != null) {
-					target = map[from.y][i];
-				}
-			}
-		} else {
-			for (int i = from.y; i > 0; i++) {
-				if (map[from.y][i] != null) {
-					target = map[from.y][i];
-				}
+	public Celda getAttackTarget(int i, int j, int dir) {
+		switch (dir) {
+		case Direction.UP: {
+			for (i--; i > 0; i--) {
+				if (map[i][j] != null)
+					return map[i][j];
 			}
 		}
-		return target;
-	}
-
-	public void win() {
-		if (nextMap != null) {
-			pantalla.createView();
-			return;
+			break;
+		case Direction.DOWN: {
+			for (i++; i < map.length; i++) {
+				if (map[i][j] != null)
+					return map[i][j];
+			}
 		}
-		this.root.getChildren().clear();
-		Text text = new Text("Victoria!");
-		text.setFont(new Font(50));
-		text.setFill(Color.WHITE);
-		this.root.setCenter(text);
-		root.setOnKeyPressed(e -> System.exit(0));
+			break;
+		case Direction.LEFT: {
+			for (j--; j >= 0; j--) {
+				if (map[i][j] != null)
+					return map[i][j];
+			}
+		}
+			break;
+		case Direction.RIGHT: {
+			for (j++; j <= map.length; j++) {
+				if (map[i][j] != null)
+					return map[i][j];
+			}
+		}
+			break;
+		}
+
+		return null;
 	}
 
-	public void lose(String enemigo) {
+	public void showText(String txt) {
 		Shape rect = new Rectangle(root.getPrefWidth(), root.getPrefHeight());
 		rect.setFill(Color.gray(0, 0.5));
-		this.root.getChildren().add(rect);
-		Text text = new Text("Perdiste!\nMoriste por: " + enemigo + "\nPresiona R para reiniciar el nivel");
+		root.getChildren().add(rect);
+		Text text = new Text(txt + "!\n" + "Presiona R para reiniciar el nivel");
 		text.setFont(new Font(50));
-		text.setFill(Color.RED);
+
+		if (txt.contains("Ganaste"))
+			text.setFill(Color.GREEN);
+		else
+			text.setFill(Color.RED);
+
+		text.setTextAlignment(TextAlignment.CENTER);
 		root.setCenter(text);
-		root.setOnKeyPressed(e -> System.exit(0));
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				sb.append(map[i][j] + " ");
-			}
-			sb.append("\n");
-		}
-
-		return sb.toString();
-
-	}
 }

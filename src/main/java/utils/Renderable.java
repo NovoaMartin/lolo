@@ -1,7 +1,7 @@
-package graphics;
+package utils;
 
 import javafx.scene.Node;
 
 public interface Renderable {
-    Node getRender();
+    public Node getRender();
 }

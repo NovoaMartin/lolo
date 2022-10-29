@@ -2,35 +2,35 @@ package utils;
 
 import java.util.Objects;
 
-import graphics.Renderable;
+import character.Player;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 
-public class Celda implements Renderable, Interactable, Movable{
+public class Celda implements Renderable, Interactable{
 	
-    public int x;
-    public int y;
+    public int j;
+    public int i;
     
     protected ImageView image;
+    protected boolean valid = true;
     
-    public Celda(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Celda(int i, int j) {
+    	this.i = i;
+        this.j = j;
         
     }
 
     public Celda translate(int direccion) {
         if (direccion == Direction.UP) {
-            return new Celda(x, y - 1);
+            return new Celda(i - 1, j);
         } else if (direccion == Direction.DOWN) {
-            return new Celda(x, y + 1);
+            return new Celda(i + 1, j);
         } else if (direccion == Direction.LEFT) {
-            return new Celda(x - 1, y);
+            return new Celda(i, j - 1);
         } else if (direccion == Direction.RIGHT) {
-            return new Celda(x + 1, y);
-        } else {
-            return null;
+            return new Celda(i, j + 1);
         }
+        return null;
     }
 
     @Override
@@ -38,17 +38,16 @@ public class Celda implements Renderable, Interactable, Movable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Celda celda = (Celda) o;
-        return x == celda.x && y == celda.y;
+        return j == celda.j && i == celda.i;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Objects.hash(j, i);
     }
 
     public int distance(Celda pos) {
-        return (int) Math.ceil(Math.hypot(pos.x - x, pos.y - y));
-
+        return (int) Math.ceil(Math.hypot(pos.j - j, pos.i - i));
     }
 
 	@Override
@@ -56,9 +55,11 @@ public class Celda implements Renderable, Interactable, Movable{
 		return image;
 	}
 
-	@Override
-	public void interactWith(Celda target) {
-		
+	public void interactWith(Player p) {
+	}
+	
+	public boolean isValid() {
+		return valid;
 	}
 
 	@Override
@@ -66,17 +67,12 @@ public class Celda implements Renderable, Interactable, Movable{
 		return false;
 	}
 	
-	@Override
-	public void tryMove(Celda pos, int dir) {
-		// TODO Auto-generated method stub
-		
+	public void visible(boolean s) {
+		image.setVisible(s);
 	}
-
-	@Override
-	public void setPos(Celda pos) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
+	public void tryMove(Celda pos, int dir) {
+		
+	}
+
 }

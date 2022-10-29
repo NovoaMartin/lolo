@@ -1,10 +1,14 @@
-9 9
-*#######*
-# T     #
-#    P  #
-#    M  D
-#    K  #
-# T     #
-#       #
-#   T   #
-*#######*
+13 13
+*###########*
+#TTTTTT TTTT#
+#TTTTK  TTTT#
+# TTTTT TTTT#
+#  TTTT TTTT#
+#P   TT TTTT#
+#      S T  #
+# TT        #
+#TTTT   TT  #
+#TTTT   TTT #
+#TTTTC   TT #
+#TTTTTT  K  #
+*######D####*
