@@ -2,9 +2,9 @@ package Utils;
 
 import character.Enemigos.*;
 import character.Player;
-import enviroment.Exit;
-import enviroment.MovableRock;
-import enviroment.UnmovableEnvironment;
+import environment.Exit;
+import environment.MovableRock;
+import environment.UnmovableEnvironment;
 import items.Llave;
 import lolo.Mapa;
 
@@ -53,10 +53,10 @@ public class MapLoader {
 
     public static void addEnvironment(Mapa map, String type, int x, int y) {
         switch (type) {
-            case "enviroment.Rock":
+            case "environment.Rock":
                 map.addEnvironment(new UnmovableEnvironment(new Celda(x, y), Direccion.DOWN, "Rock"));
                 break;
-            case "enviroment.MovableRock":
+            case "environment.MovableRock":
                 map.addEnvironment(new MovableRock(new Celda(x, y)));
                 break;
         }

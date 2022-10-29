@@ -1,4 +1,4 @@
-package enviroment;
+package environment;
 
 import Utils.Celda;
 import Utils.Constants;

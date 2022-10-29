@@ -1,5 +1,6 @@
 import Utils.Celda;
 import Utils.Direccion;
+import Utils.MapLoader;
 import Utils.Pantalla;
 import character.Player;
 import items.Llave;
@@ -11,9 +12,10 @@ import static org.junit.Assert.assertTrue;
 
 public class LlaveTest {
     @Test
-    public void testInteractWith() {
+    public void testInteractWith() throws InterruptedException {
         new Thread(Pantalla::startGame).start();
-        Mapa m = new Mapa("mapa.test.txt", new Pantalla(), 10, 10);
+        Thread.sleep(500);
+        Mapa m = MapLoader.loadFromFile("mapa.test.txt", new Pantalla());
         Llave l = new Llave(new Celda(1, 1));
         Player p = new Player(new Celda(2, 1), m, 3);
         l.interactWith(p, Direccion.DOWN, m);

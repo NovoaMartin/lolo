@@ -2,7 +2,7 @@ import Utils.Celda;
 import Utils.Direccion;
 import Utils.Pantalla;
 import character.Player;
-import enviroment.UnmovableEnvironment;
+import environment.UnmovableEnvironment;
 import lolo.Mapa;
 import org.junit.Before;
 import org.junit.Test;

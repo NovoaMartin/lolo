@@ -2,7 +2,7 @@ import Utils.Celda;
 import Utils.Direccion;
 import Utils.Pantalla;
 import character.Player;
-import enviroment.MovableRock;
+import environment.MovableRock;
 import lolo.Mapa;
 import org.junit.Before;
 import org.junit.Test;
