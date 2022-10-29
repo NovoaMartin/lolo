@@ -1,6 +1,7 @@
 import Utils.Celda;
+import Utils.MapLoader;
+import Utils.Pantalla;
 import character.Enemigos.Pozo;
-import character.Enemigos.Trampa;
 import character.Player;
 import lolo.Mapa;
 import org.junit.Before;
@@ -15,8 +16,9 @@ public class PozoTest {
     Pozo t;
 
     @Before
-    public void setUp() {
-        m = new Mapa("mapa.test.txt");
+    public void setUp() throws InterruptedException {
+        Util.initialize();
+        m = MapLoader.loadFromFile("mapa.test.txt", new Pantalla());
         p = m.getPlayer();
         t = new Pozo(new Celda(1, 1), m, 3);
     }

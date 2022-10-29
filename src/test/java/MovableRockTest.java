@@ -1,7 +1,9 @@
 import Utils.Celda;
 import Utils.Direccion;
+import Utils.MapLoader;
+import Utils.Pantalla;
 import character.Player;
-import enviroment.MovableRock;
+import environment.MovableRock;
 import lolo.Mapa;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +15,9 @@ public class MovableRockTest {
     Mapa m;
 
     @Before
-    public void setUp() {
-        m = new Mapa("mapa.test.txt");
+    public void setUp() throws InterruptedException {
+        Util.initialize();
+        m = MapLoader.loadFromFile("mapa.test.txt", new Pantalla());
         rock = new MovableRock(new Celda(3, 3));
     }
 

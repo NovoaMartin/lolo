@@ -2,9 +2,10 @@ package items;
 
 import Utils.Celda;
 import character.Character;
+import graphics.Renderable;
 import lolo.Mapa;
 
-public abstract class Item {
+public abstract class Item implements Renderable {
     protected Celda pos;
     protected boolean valid = true;
 
@@ -16,5 +17,9 @@ public abstract class Item {
 
     public boolean isValid() {
         return valid;
+    }
+
+    public Celda getPos() {
+        return pos;
     }
 }

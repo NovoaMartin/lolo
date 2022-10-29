@@ -1,8 +1,10 @@
 import Utils.Celda;
 import Utils.Direccion;
+import Utils.MapLoader;
+import Utils.Pantalla;
 import character.Player;
-import enviroment.MovableRock;
-import enviroment.Wall;
+import environment.MovableRock;
+import environment.UnmovableEnvironment;
 import lolo.Mapa;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +16,9 @@ public class MapaTest {
     Player player;
 
     @Before
-    public void setUp() {
-        mapa = new Mapa("mapa.test.txt");
+    public void setUp() throws InterruptedException {
+        Util.initialize();
+        mapa = MapLoader.loadFromFile("mapa.test.txt", new Pantalla());
         player = mapa.getPlayer();
     }
 
@@ -54,6 +57,7 @@ public class MapaTest {
     public void elJugadorGanaAlEntrarALaSalida() {
         player.setPos(new Celda(3, 4));
         player.takeKey();
+        mapa.getExit().increaseKeyCount();
         assertFalse(player.isWinner());
         player.tryMove(Direccion.RIGHT);
         assertTrue(player.isWinner());
@@ -71,12 +75,12 @@ public class MapaTest {
     @Test
     public void noSePuedenMoverObstaculosSobreOtroObstaculo() {
         MovableRock r = (MovableRock) mapa.getEnviroments()[4][5];
-        Wall wall = (Wall) mapa.getEnviroments()[5][5];
+        UnmovableEnvironment unmovableEnvironment = (UnmovableEnvironment) mapa.getEnviroments()[5][5];
         player.setPos(new Celda(3, 5));
         player.tryMove(Direccion.RIGHT);
         assertEquals(new Celda(4, 5), r.getPos());
         assertEquals(new Celda(3, 5), player.getPos());
-        assertEquals(new Celda(5, 5), wall.getPos());
+        assertEquals(new Celda(5, 5), unmovableEnvironment.getPos());
     }
 
     @Test

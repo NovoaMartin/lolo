@@ -1,11 +1,12 @@
 package character;
 
 import Utils.*;
+import graphics.Renderable;
 import lolo.Mapa;
 
-public abstract class Character {
-    private Celda pos;
-    private final Mapa mapa;
+public abstract class Character implements Renderable {
+    protected Celda pos;
+    protected final Mapa mapa;
     private int vidas;
     protected boolean alive = true;
 
@@ -15,9 +16,7 @@ public abstract class Character {
         this.vidas = vidas;
     }
 
-    public void tryMove(int direccion) {
-        this.mapa.tryMove(this, direccion);
-    }
+    public abstract void tryMove(int direccion);
 
     public void setPos(Celda pos) {
         this.pos = pos;
@@ -26,15 +25,27 @@ public abstract class Character {
     public Celda getPos() {
         return pos;
     }
-    
-    public void recibirDanio() {
-    	this.vidas--;
-    	if(this.vidas <= 0) {
-    		morir();
-    	}
+
+    public void recibirDanio(String enemigo) {
+        this.vidas--;
+        if (this.vidas <= 0) {
+            morir(enemigo);
+        }
     }
-    
-    public void morir() {
+
+    public boolean canWin() {
+        return false;
+    }
+
+    public boolean hasWinCondition(){
+        return false;
+    }
+
+    public boolean win(){
+        return false;
+    }
+
+    public void morir(String enemigo) {
         this.vidas = 0;
         this.alive = false;
     }
@@ -46,4 +57,6 @@ public abstract class Character {
     public int getVidas() {
         return vidas;
     }
+
+
 }

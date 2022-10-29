@@ -1,0 +1,302 @@
+@startuml
+!theme plain
+skinparam linetype ortho
+
+class Celda {
+  + x: int
+  + y: int
+  + equals(Object): boolean
+  + translate(int): Celda
+  + hashCode(): int
+  + distance(Celda): int
+}
+class Character {
+  # pos: Celda
+  # mapa: Mapa
+  - vidas: int
+  # alive: boolean
+  + setPos(Celda): void
+  + hasWinCondition(): boolean
+  + recibirDanio(String): void
+  + canWin(): boolean
+  + morir(String): void
+  + win(): boolean
+  + getVidas(): int
+  + isAlive(): boolean
+  + tryMove(int): void
+  + getPos(): Celda
+}
+class Constants {
+  + MOVEMENT_ANIMATION_DURATION: Duration
+  + DEAD_ANIMATION_DURATION: Duration
+  + MAGIC_ANIMATION_DURATION: Duration
+}
+class Direccion {
+  + UP: int
+  + DOWN: int
+  + LEFT: int
+  + RIGHT: int
+  + getRotation(int): int
+  + reverse(int): int
+  + get(String): int
+}
+class Enemigo {
+  - nombre: String
+  + interactWith(Player, int, Mapa): void
+  + canBeAttacked(): boolean
+  + awaken(): void
+  + update(): void
+  + canInteractWith(Celda): boolean
+  + tryMove(int): void
+  + atacar(Player): void
+}
+class Enviroment {
+  # pos: Celda
+  + canMove(int, Mapa): boolean
+  + setPos(Celda): void
+  + getPos(): Celda
+  + interactWith(Character, int, Mapa): void
+}
+class Exit {
+  - keyCount: int
+  - closed: Image
+  - open: Image
+  - image: ImageView
+  - map: Mapa
+  - isOpen: boolean
+  + interactWith(Character, int, Mapa): void
+  + getRender(): Node
+  + increaseKeyCount(): void
+}
+class FireThing {
+  - orientacion: int
+  - isAwake: boolean
+  - fire: ImageView
+  - nextThing: Celda
+  - image: ImageView
+  - fireImages: Map<Integer, Image>
+  - images: Map<Integer, Image>
+  + canAttack(Celda): boolean
+  + atacar(Player): void
+  + getRender(): Node
+  + awaken(): void
+  + update(): void
+  - updateFire(): void
+  + canInteractWith(Celda): boolean
+  + interactWith(Player, int, Mapa): void
+}
+class GameRunner {
+  - acciones: Queue<Integer>
+  - player: Player
+  - timer: Timer
+  - mapaActual: Mapa
+  + move(int, int): void
+  + start(): void
+  + atacar(): void
+  + loadFromFile(String): void
+  + move(int): void
+}
+class Item {
+  # pos: Celda
+  # valid: boolean
+  + interactWith(Character, int, Mapa): void
+  + isValid(): boolean
+  + getPos(): Celda
+}
+class Llave {
+  - image: ImageView
+  + interactWith(Character, int, Mapa): void
+  + getRender(): Node
+}
+class Main {
+  + main(String[]): void
+}
+class MapLoader {
+  + addEnvironment(Mapa, String, int, int): void
+  + loadFromFile(String, Pantalla): Mapa
+  + addItem(Mapa, String, int, int): void
+  + addEnemigo(Mapa, String, int, int, Scanner): void
+}
+class Mapa {
+  - exit: Exit
+  - players: ArrayList<Player>
+  - items: Item[][]
+  - enviroments: Enviroment[][]
+  - root: BorderPane
+  - enemigos: ArrayList<Enemigo>
+  - nextActiveMap: Mapa
+  - pantalla: Pantalla
+  - height: int
+  - width: int
+  - nextMap: String
+  - mapFile: String
+  + win(): void
+  + tryMove(Enviroment, int): boolean
+  + getEnemigos(): ArrayList<Enemigo>
+  + addEnvironment(Enviroment): void
+  + getPlayer(): Player
+  + addItem(Item): void
+  + addWalls(): void
+  + getNextActiveMap(): Mapa
+  + setNextMap(String): void
+  + tryMove(Character, int): void
+  + setPlayer(Player): void
+  + getAttackTarget(Player, int): Enemigo
+  + getExit(): Exit
+  + lose(String): void
+  + findNextOccupiedSpace(Celda, int): Celda
+  + getEnviroments(): Enviroment[][]
+  + update(): void
+  + tryMove(Enemigo, int): void
+  + canMove(Celda, int): boolean
+  + setExit(Exit): void
+  + getRender(): Node
+  + tryMove(Player, int): void
+  + addEnemigo(Enemigo): void
+  + setEventListeners(Node): void
+}
+class Medusa {
+  - image: ImageView
+  + getRender(): Node
+  + atacar(Player): void
+  + canInteractWith(Celda): boolean
+  + morir(String): void
+  + interactWith(Player, int, Mapa): void
+  + canBeAttacked(): boolean
+}
+class MovableRock {
+  - image: ImageView
+  # tryMove(int, Mapa): boolean
+  + getRender(): Node
+  + setPos(Celda): void
+  + canMove(int, Mapa): boolean
+  + interactWith(Character, int, Mapa): void
+}
+class MovingThing {
+  - sprites: Map<Integer, Image[]>
+  - image: ImageView
+  - tickCount: int
+  - direccion: int
+  + atacar(Player): void
+  + canInteractWith(Celda): boolean
+  + getRender(): Node
+  + setPos(Celda): void
+  + interactWith(Player, int, Mapa): void
+  + update(): void
+  + morir(String): void
+  + canBeAttacked(): boolean
+}
+class Pantalla {
+  - mapaActual: Mapa
+  - stage: Stage
+  - originalMap: String
+  - TECLADO: boolean
+  - updateTimer: Timer
+  + start(Stage): void
+  + main(String[]): void
+  + createView(String): Mapa
+  + startGame(): void
+  - createUpdateTimer(Mapa): void
+}
+class Player {
+  - image: ImageView
+  - moving: boolean
+  - attacking: boolean
+  - sprites: Map<Integer, Image[]>
+  - orientacion: int
+  - key: boolean
+  - winner: boolean
+  - magicalShot: Shape
+  + takeKey(): void
+  + recibirDanio(String): void
+  + setEventListeners(Node): void
+  + win(): boolean
+  + setPos(Celda): void
+  + morir(String): void
+  + canWin(): boolean
+  + isWinner(): boolean
+  + hasKey(): boolean
+  + hasWinCondition(): boolean
+  + tryMove(int): void
+  + getRender(): Node
+  + atacar(): void
+}
+class Pozo {
+  - image: ImageView
+  + interactWith(Player, int, Mapa): void
+  + getRender(): Node
+  + atacar(Player): void
+  + canInteractWith(Celda): boolean
+}
+interface Renderable << interface >> {
+  + getRender(): Node
+}
+class SpriteCycleTransition {
+  - sprites: Image[]
+  - i: int
+  - imageNumber: int
+  - image: ImageView
+  # interpolate(double): void
+}
+class SpriteMovementTransition {
+  - cycle: SpriteCycleTransition
+  - movement: TranslateTransition
+  + setOnFinished(EventHandler<ActionEvent>): void
+  + setByY(double): void
+  + setByX(double): void
+  + play(): void
+}
+class SystemInfo {
+  + javafxVersion(): String
+  + javaVersion(): String
+}
+class Trampa {
+  - image: ImageView
+  + getRender(): Node
+  + canInteractWith(Celda): boolean
+  + atacar(Player): void
+  + interactWith(Player, int, Mapa): void
+}
+class UnmovableEnvironment {
+  - image: ImageView
+  + interactWith(Character, int, Mapa): void
+  + getRender(): Node
+}
+interface Updatable << interface >> {
+  + update(): void
+}
+
+Character                "1" *-up[#595959,plain]-> "pos\n1" Celda
+Character                "1" *-up[#595959,plain]-> "mapa\n1" Mapa
+Character                 -up[#008200,dashed]-^  Renderable
+Enemigo                   -up[#000082,plain]-^  Character
+Enemigo                   -up[#008200,dashed]-^  Updatable
+Enviroment               "1" *-up[#595959,plain]-> "pos\n1" Celda
+Enviroment                -up[#008200,dashed]-^  Renderable
+Exit                      -up[#000082,plain]-^  Enviroment
+Exit                     "1" *-up[#595959,plain]-> "map\n1" Mapa
+FireThing                "1" *-up[#595959,plain]-> "nextThing\n1" Celda
+FireThing                 -up[#000082,plain]-^  Enemigo
+GameRunner               "1" *-up[#595959,plain]-> "mapaActual\n1" Mapa
+GameRunner               "1" *-up[#595959,plain]-> "player\n1" Player
+Item                     "1" *-up[#595959,plain]-> "pos\n1" Celda
+Item                      -up[#008200,dashed]-^  Renderable
+Llave                     -up[#000082,plain]-^  Item
+Mapa                     "1" *-up[#595959,plain]-> "enemigos\n*" Enemigo
+Mapa                     "1" *-up[#595959,plain]-> "enviroments\n*" Enviroment
+Mapa                     "1" *-up[#595959,plain]-> "exit\n1" Exit
+Mapa                     "1" *-up[#595959,plain]-> "items\n*" Item
+Mapa                     "1" *-up[#595959,plain]-> "pantalla\n1" Pantalla
+Mapa                     "1" *-up[#595959,plain]-> "players\n*" Player
+Mapa                      -up[#008200,dashed]-^  Renderable
+Mapa                      -up[#008200,dashed]-^  Updatable
+Medusa                    -up[#000082,plain]-^  Enemigo
+MovableRock               -up[#000082,plain]-^  Enviroment
+MovingThing               -up[#000082,plain]-^  Enemigo
+Pantalla                 "1" *-up[#595959,plain]-> "mapaActual\n1" Mapa
+Player                    -up[#000082,plain]-^  Character
+Pozo                      -up[#000082,plain]-^  Enemigo
+SpriteMovementTransition "1" *-up[#595959,plain]-> "cycle\n1" SpriteCycleTransition
+Trampa                    -up[#000082,plain]-^  Enemigo
+UnmovableEnvironment      -up[#000082,plain]-^  Enviroment
+@enduml

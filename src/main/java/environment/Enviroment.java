@@ -1,12 +1,12 @@
-package enviroment;
+package environment;
 
 import Utils.Celda;
 import character.Character;
+import graphics.Renderable;
 import lolo.Mapa;
 
-public abstract class Enviroment {
+public abstract class Enviroment implements Renderable {
     protected Celda pos;
-    protected Mapa mapa;
 
     public Enviroment(Celda pos) {
         this.pos = pos;
@@ -20,5 +20,9 @@ public abstract class Enviroment {
 
     public Celda getPos() {
         return pos;
+    }
+
+    public boolean canMove(int direccion, Mapa mapa) {
+        return false;
     }
 }
