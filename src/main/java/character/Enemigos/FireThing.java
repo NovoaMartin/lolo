@@ -92,8 +92,11 @@ public class FireThing extends Enemigo {
     Celda nextThing;
 
     private void updateFire() {
-        nextThing = mapa.findNextOccupiedSpace(pos, orientacion);
-        nextThing = nextThing.translate(Direccion.reverse(orientacion));
+        boolean updated = false;
+        Celda newNextThing = mapa.findNextOccupiedSpace(pos, orientacion);
+        newNextThing = newNextThing.translate(Direccion.reverse(orientacion));
+        if (newNextThing != nextThing) updated = true;
+        nextThing = newNextThing;
         if (orientacion == Direccion.RIGHT) {
             fire.setTranslateX(pos.x * 50 + 50);
             fire.setTranslateY(pos.y * 50 + 10);
@@ -114,6 +117,9 @@ public class FireThing extends Enemigo {
             fire.setTranslateY(pos.y * 50 + 50);
             fire.setFitWidth(30);
             fire.setFitHeight(50 * (nextThing.y - pos.y));
+        }
+        if (updated && canAttack(mapa.getPlayer().getPos())) {
+            atacar(mapa.getPlayer());
         }
     }
 

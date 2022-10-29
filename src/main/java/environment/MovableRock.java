@@ -27,10 +27,9 @@ public class MovableRock extends Enviroment {
 
     @Override
     public void interactWith(Character character, int direccion, Mapa mapa) {
-        Celda inicial = this.getPos();
         boolean moved = this.tryMove(direccion, mapa);
         if (moved) {
-            character.setPos(inicial);
+            character.tryMove(direccion);
         }
     }
 

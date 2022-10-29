@@ -83,6 +83,9 @@ public class Player extends Character {
         super.morir(enemigo);
         if (enemigo.equals("Medusa")) {
             image.setEffect(new ColorAdjust(0, 0, -0.9, 0));
+        }
+        if (enemigo.equals("Quemado")) {
+            image.setEffect(new ColorAdjust(0, 0, -1, 0));
         } else {
             FadeTransition ft = new FadeTransition(Constants.DEAD_ANIMATION_DURATION, image);
             ft.setFromValue(1.0);

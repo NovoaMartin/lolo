@@ -13,7 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Pantalla extends Application {
-    private static final boolean TECLADO = false;
+    private static final boolean TECLADO = true;
 
     public static void main(String[] args) {
         launch();
