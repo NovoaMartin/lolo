@@ -1,7 +1,8 @@
-ancho alto
+ancho alto nroLlaves
 xSalida ySalida
 cantItems cantEnviroments cantEnemigos
 xInicial yInicial vidas
 TipoItem x y //cantItems lineas
 TipoEnviroment x y //cantEnviroments lineas
 TipoEnemigo x y //cantEnemigos lineas
+mapaSiguiente

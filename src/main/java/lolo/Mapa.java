@@ -43,6 +43,7 @@ public class Mapa implements Renderable, Updatable {
     private final String mapFile;
     private String nextMap;
     Pantalla pantalla;
+    private boolean isOver = false;
 
     public Mapa(String mapName, Pantalla pantalla, int width, int height) {
         this.mapFile = mapName;
@@ -256,6 +257,7 @@ public class Mapa implements Renderable, Updatable {
     }
 
     public void win() {
+        isOver = true;
         if (nextMap != null) {
             nextActiveMap = pantalla.createView(nextMap);
             return;
@@ -269,6 +271,7 @@ public class Mapa implements Renderable, Updatable {
     }
 
     public void lose(String enemigo) {
+        isOver = true;
         Shape rect = new Rectangle(root.getPrefWidth(), root.getPrefHeight());
         rect.setFill(Color.gray(0, 0.5));
         this.root.getChildren().add(rect);
@@ -281,9 +284,10 @@ public class Mapa implements Renderable, Updatable {
 
     @Override
     public void update() {
-        for (Enemigo enemigo : enemigos) {
-            enemigo.update();
-        }
+        if (!isOver)
+            for (Enemigo enemigo : enemigos) {
+                enemigo.update();
+            }
     }
 
     public void setPlayer(Player player) {

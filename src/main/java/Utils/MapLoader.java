@@ -18,8 +18,9 @@ public class MapLoader {
             Scanner scanner = new Scanner(new File("mapas/" + path));
             int width = scanner.nextInt();
             int height = scanner.nextInt();
+            int keyCount = scanner.nextInt();
             Mapa map = new Mapa(path, p, width, height);
-            Exit exit = new Exit(new Celda(scanner.nextInt(), scanner.nextInt()), map);
+            Exit exit = new Exit(new Celda(scanner.nextInt(), scanner.nextInt()), map, keyCount);
             int numItems = scanner.nextInt();
             int numEnviroments = scanner.nextInt();
             int numEnemies = scanner.nextInt();

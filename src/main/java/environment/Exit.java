@@ -19,9 +19,12 @@ public class Exit extends Enviroment {
     private boolean isOpen = false;
     private final Mapa map;
 
-    public Exit(Celda pos, Mapa map) {
+    private final int requiredKeyCount;
+
+    public Exit(Celda pos, Mapa map, int requiredKeyCount) {
         super(pos);
         this.map = map;
+        this.requiredKeyCount = requiredKeyCount;
         image = new ImageView();
         image.setImage(closed);
         image.setTranslateY(pos.y * 50);
@@ -40,9 +43,9 @@ public class Exit extends Enviroment {
 
     public void increaseKeyCount() {
         keyCount++;
-        if (keyCount == 1) {
+        if (keyCount >= requiredKeyCount) {
             image.setImage(open);
-            for(Enemigo e : map.getEnemigos()) {
+            for (Enemigo e : map.getEnemigos()) {
                 e.awaken();
             }
             isOpen = true;
