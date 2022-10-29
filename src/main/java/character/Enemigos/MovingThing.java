@@ -4,20 +4,46 @@ import Utils.Constants;
 import Utils.Direccion;
 import character.Enemigo;
 import character.Player;
-import javafx.animation.TranslateTransition;
+import graphics.SpriteMovementTransition;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lolo.Mapa;
 import Utils.Celda;
 
+import java.util.Map;
+
 public class MovingThing extends Enemigo {
 
-    ImageView image = new ImageView(new Image("file:src/main/resources/medusa.png"));
+    ImageView image;
     private int direccion = Direccion.DOWN;
+
+    private static final Map<Integer, Image[]> sprites = Map.of(
+            Direccion.UP, new Image[]{
+                    new Image("file:src/main/resources/moving/up1.png"),
+                    new Image("file:src/main/resources/moving/up2.png"),
+                    new Image("file:src/main/resources/moving/up3.png")
+            },
+            Direccion.DOWN, new Image[]{
+                    new Image("file:src/main/resources/moving/down1.png"),
+                    new Image("file:src/main/resources/moving/down2.png"),
+                    new Image("file:src/main/resources/moving/down3.png")
+            },
+            Direccion.LEFT, new Image[]{
+                    new Image("file:src/main/resources/moving/left1.png"),
+                    new Image("file:src/main/resources/moving/left2.png"),
+                    new Image("file:src/main/resources/moving/left3.png")
+            },
+            Direccion.RIGHT, new Image[]{
+                    new Image("file:src/main/resources/moving/right1.png"),
+                    new Image("file:src/main/resources/moving/right2.png"),
+                    new Image("file:src/main/resources/moving/right3.png")
+            }
+    );
 
     public MovingThing(Celda pos, Mapa mapa, int vidas) {
         super(pos, mapa, vidas, "MovingThing");
+        image = new ImageView(sprites.get(direccion)[1]);
         image.setFitHeight(50);
         image.setFitWidth(50);
         image.setTranslateX(pos.x * 50);
@@ -53,7 +79,7 @@ public class MovingThing extends Enemigo {
     @Override
     public void setPos(Celda pos) {
         super.setPos(pos);
-        TranslateTransition tt = new TranslateTransition(Constants.MOVEMENT_ANIMATION_DURATION, image);
+        SpriteMovementTransition tt = new SpriteMovementTransition(image, Constants.MOVEMENT_ANIMATION_DURATION, sprites.get(direccion));
         if (direccion == Direccion.RIGHT)
             tt.setByX(50);
         else if (direccion == Direccion.LEFT)

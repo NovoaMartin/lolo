@@ -16,8 +16,13 @@ public class SpriteCycleTransition extends Transition {
         this.sprites = sprites;
     }
 
+    int imageNumber = 0;
+
     @Override
     protected void interpolate(double frac) {
-        image.setImage(sprites[i++ % sprites.length]);
+        if (i++ % 2 == 0) {
+            imageNumber = (imageNumber + 1) % sprites.length;
+            this.image.setImage(sprites[imageNumber]);
+        }
     }
 }
